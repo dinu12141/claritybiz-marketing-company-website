@@ -93,13 +93,8 @@ export function Header() {
       )}
     >
       <Container>
-        <div
-          className={cn(
-            "site-header flex items-center justify-between gap-4",
-            scrolled ? "h-[var(--header-h-compact)]" : "h-[var(--header-h)]",
-          )}
-        >
-          <LogoLockup size={scrolled ? 36 : 42} priority />
+        <div className="flex h-16 items-center justify-between gap-4 md:h-[4.25rem]">
+          <LogoLockup size={40} priority />
 
           {/* Desktop navigation */}
           <nav className="hidden lg:block" aria-label="Primary">
