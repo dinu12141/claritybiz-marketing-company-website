@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { ArrowRight, ChevronDown, Menu, Phone, X } from "lucide-react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/Button";
@@ -273,177 +274,186 @@ export function Header() {
         </div>
       </Container>
 
-      {/* Mobile navigation drawer */}
-      <div
-        id="mobile-navigation"
-        className={cn("fixed inset-0 z-[60] lg:hidden", !mobileOpen && "pointer-events-none")}
-        aria-hidden={!mobileOpen}
-        inert={!mobileOpen}
-      >
-        <div
-          className={cn(
-            "absolute inset-0 bg-navy/50 backdrop-blur-sm transition-opacity duration-300",
-            mobileOpen ? "opacity-100" : "opacity-0",
-          )}
-          onClick={closeMobile}
-        />
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-label="Navigation menu"
-          className={cn(
-            "absolute inset-y-0 right-0 flex w-[min(100%,380px)] flex-col bg-white shadow-2xl transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
-            mobileOpen ? "translate-x-0" : "translate-x-full",
-          )}
-        >
-          <div className="flex items-center justify-between border-b border-line px-5 py-4">
-            <LogoLockup size={42} />
-            <button
-              ref={closeButtonRef}
-              type="button"
-              className="flex h-10 w-10 items-center justify-center rounded-xl border border-line text-navy hover:bg-light"
-              aria-label="Close navigation menu"
+      {/* Mobile navigation drawer - Portaled to document.body for clean stacking context */}
+      {typeof document !== "undefined" &&
+        createPortal(
+          <div
+            id="mobile-navigation"
+            className={cn(
+              "fixed inset-0 z-[9999] lg:hidden transition-all duration-300",
+              mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none",
+            )}
+            aria-hidden={!mobileOpen}
+          >
+            {/* Backdrop */}
+            <div
+              className="absolute inset-0 bg-navy-deep/60 backdrop-blur-sm"
               onClick={closeMobile}
-            >
-              <X className="h-5 w-5" />
-            </button>
-          </div>
+              aria-label="Close menu backdrop"
+            />
 
-          <nav className="flex-1 overflow-y-auto px-3 py-4" aria-label="Mobile">
-            <ul className="space-y-1">
-              {primaryNav.map((item) =>
-                item.children ? (
-                  <li key={item.to}>
-                    <div className="flex items-center">
-                      <NavLink
-                        to={item.to}
-                        end
-                        className={({ isActive }) =>
-                          cn(
-                            "flex-1 rounded-xl px-4 py-3 text-base font-semibold",
-                            isActive ? "bg-light text-navy" : "text-ink hover:bg-light",
-                          )
-                        }
-                      >
-                        {item.label}
-                      </NavLink>
-                      <button
-                        type="button"
-                        className="ml-1 flex h-11 w-11 items-center justify-center rounded-xl text-navy hover:bg-light"
-                        aria-expanded={mobileServicesOpen}
-                        aria-controls="mobile-services-list"
-                        aria-label="Toggle services list"
-                        onClick={() => setMobileServicesOpen((open) => !open)}
-                      >
-                        <ChevronDown
-                          className={cn("h-5 w-5 transition-transform duration-300", mobileServicesOpen && "rotate-180")}
-                        />
-                      </button>
-                    </div>
-                    <ul
-                      id="mobile-services-list"
-                      className={cn(
-                        "grid transition-all duration-300",
-                        mobileServicesOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0",
-                      )}
-                    >
-                      <li className="overflow-hidden">
-                        <ul className="ml-4 space-y-0.5 border-l-2 border-gold/60 pl-3 pt-1 pb-2">
-                          {item.children.map((child) => {
-                            const thumb = services.find((service) => service.path === child.to)?.image;
-                            return (
+            {/* Drawer Panel */}
+            <div
+              role="dialog"
+              aria-modal="true"
+              aria-label="Navigation menu"
+              className={cn(
+                "absolute inset-y-0 right-0 flex h-full max-h-[100dvh] w-[min(100%,360px)] flex-col bg-white shadow-2xl transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
+                mobileOpen ? "translate-x-0" : "translate-x-full",
+              )}
+            >
+              {/* Drawer Header */}
+              <div className="flex h-16 shrink-0 items-center justify-between border-b border-line bg-white px-5">
+                <LogoLockup size={40} />
+                <button
+                  ref={closeButtonRef}
+                  type="button"
+                  className="flex h-10 w-10 items-center justify-center rounded-xl border border-line text-navy hover:bg-light"
+                  aria-label="Close navigation menu"
+                  onClick={closeMobile}
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+
+              {/* Navigation Links */}
+              <nav className="flex-1 overflow-y-auto px-4 py-4" aria-label="Mobile navigation">
+                <ul className="space-y-1.5">
+                  {primaryNav.map((item) =>
+                    item.children ? (
+                      <li key={item.to} className="rounded-xl border border-line/60 bg-slate-50/70 p-1.5">
+                        <div className="flex items-center justify-between">
+                          <NavLink
+                            to={item.to}
+                            end
+                            onClick={closeMobile}
+                            className={({ isActive }) =>
+                              cn(
+                                "flex-1 rounded-lg px-3 py-2 text-base font-bold",
+                                isActive ? "bg-white text-navy shadow-sm" : "text-ink hover:text-navy",
+                              )
+                            }
+                          >
+                            {item.label}
+                          </NavLink>
+                          <button
+                            type="button"
+                            className="flex h-10 w-10 items-center justify-center rounded-lg text-navy hover:bg-white"
+                            aria-expanded={mobileServicesOpen}
+                            aria-controls="mobile-services-list"
+                            aria-label="Toggle services list"
+                            onClick={() => setMobileServicesOpen((open) => !open)}
+                          >
+                            <ChevronDown
+                              className={cn(
+                                "h-5 w-5 transition-transform duration-300 text-royal",
+                                mobileServicesOpen && "rotate-180",
+                              )}
+                            />
+                          </button>
+                        </div>
+
+                        {mobileServicesOpen && (
+                          <ul
+                            id="mobile-services-list"
+                            className="mt-1.5 space-y-1 border-t border-line/60 pt-2 pl-2"
+                          >
+                            {item.children.map((child) => (
                               <li key={child.to}>
                                 <NavLink
                                   to={child.to}
+                                  onClick={closeMobile}
                                   className={({ isActive }) =>
                                     cn(
-                                      "flex items-center gap-3 rounded-lg px-3 py-2 text-[15px] font-medium",
-                                      isActive ? "bg-light text-navy" : "text-ink/80 hover:bg-light hover:text-navy",
+                                      "block rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                                      isActive
+                                        ? "bg-royal/10 font-bold text-royal"
+                                        : "text-ink/80 hover:bg-white hover:text-navy",
                                     )
                                   }
-                                  tabIndex={mobileServicesOpen ? 0 : -1}
                                 >
-                                  {thumb && (
-                                    <img
-                                      src={thumb.src}
-                                      alt=""
-                                      aria-hidden="true"
-                                      className="h-9 w-11 shrink-0 rounded-lg object-cover ring-1 ring-line"
-                                      loading="lazy"
-                                      decoding="async"
-                                    />
-                                  )}
                                   {child.label}
                                 </NavLink>
                               </li>
-                            );
-                          })}
-                        </ul>
+                            ))}
+                          </ul>
+                        )}
                       </li>
-                    </ul>
-                  </li>
-                ) : (
-                  <li key={item.to}>
+                    ) : (
+                      <li key={item.to}>
+                        <NavLink
+                          to={item.to}
+                          end={item.to === "/"}
+                          onClick={closeMobile}
+                          className={({ isActive }) =>
+                            cn(
+                              "block rounded-xl px-4 py-2.5 text-base font-semibold transition-colors",
+                              isActive
+                                ? "bg-royal/10 font-bold text-royal"
+                                : "text-ink hover:bg-slate-100 hover:text-navy",
+                            )
+                          }
+                        >
+                          {item.label}
+                        </NavLink>
+                      </li>
+                    ),
+                  )}
+                  <li>
                     <NavLink
-                      to={item.to}
-                      end={item.to === "/"}
+                      to="/blog"
+                      onClick={closeMobile}
                       className={({ isActive }) =>
                         cn(
-                          "block rounded-xl px-4 py-3 text-base font-semibold",
-                          isActive ? "bg-light text-navy" : "text-ink hover:bg-light",
+                          "block rounded-xl px-4 py-2.5 text-base font-semibold transition-colors",
+                          isActive
+                            ? "bg-royal/10 font-bold text-royal"
+                            : "text-ink hover:bg-slate-100 hover:text-navy",
                         )
                       }
                     >
-                      {item.label}
+                      Insights / Blog
                     </NavLink>
                   </li>
-                ),
-              )}
-              <li>
-                <NavLink
-                  to="/blog"
-                  className={({ isActive }) =>
-                    cn(
-                      "block rounded-xl px-4 py-3 text-base font-semibold",
-                      isActive ? "bg-light text-navy" : "text-ink hover:bg-light",
-                    )
-                  }
-                >
-                  Insights
-                </NavLink>
-              </li>
-            </ul>
-          </nav>
+                </ul>
+              </nav>
 
-          <div className="space-y-3 border-t border-line bg-light/60 p-5">
-            <Button href={site.phoneHref} className="w-full" size="md">
-              <Phone className="h-4 w-4" /> Call Now · {site.phoneDisplay}
-            </Button>
-            <Button
-              href={site.whatsappHref}
-              variant="navy"
-              className="w-full bg-[#1f9d55] hover:bg-[#178a49]"
-              size="md"
-            >
-              <WhatsAppIcon className="h-4.5 w-4.5" /> Chat on WhatsApp
-            </Button>
-            <div className="flex items-center justify-between pt-1 text-sm">
-              <Link to="/consultation" className="font-semibold text-royal hover:text-navy">
-                Get Consultation →
-              </Link>
-              <a
-                href={site.facebookUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-muted hover:text-navy"
-                aria-label="TV Clarity Capital on Facebook"
-              >
-                <FacebookIcon className="h-4 w-4" /> Facebook
-              </a>
+              {/* Action Buttons */}
+              <div className="shrink-0 space-y-2.5 border-t border-line bg-slate-50/90 p-4">
+                <Button href={site.phoneHref} className="w-full" size="md">
+                  <Phone className="h-4 w-4" /> Call Now · {site.phoneDisplay}
+                </Button>
+                <Button
+                  href={site.whatsappHref}
+                  variant="navy"
+                  className="w-full bg-[#1f9d55] text-white hover:bg-[#178a49]"
+                  size="md"
+                >
+                  <WhatsAppIcon className="h-4.5 w-4.5" /> Chat on WhatsApp
+                </Button>
+                <div className="flex items-center justify-between pt-1 text-sm">
+                  <Link
+                    to="/consultation"
+                    onClick={closeMobile}
+                    className="font-semibold text-royal hover:text-navy"
+                  >
+                    Get Consultation →
+                  </Link>
+                  <a
+                    href={site.facebookUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-muted hover:text-navy"
+                    aria-label="TV Clarity Capital on Facebook"
+                  >
+                    <FacebookIcon className="h-4 w-4" /> Facebook
+                  </a>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
+          </div>,
+          document.body,
+        )}
     </header>
   );
 }
