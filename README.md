@@ -5,6 +5,7 @@
 ![TV Clarity Capital Logo](src/assets/logo.svg)
 
 ### **"Our Capital is Your Success"**
+
 **Professional Solutions for Finance, Business & Technology**
 
 [![React](https://img.shields.io/badge/React-19.2.6-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
@@ -52,6 +53,7 @@
 **TV Clarity Capital (Pvt) Ltd** is a corporate web application and back-office CRM engineered for a premier Sri Lankan accounting, auditing, business registration, consulting, and technology services firm based in Monaragala.
 
 The platform bridges the gap between modern corporate marketing and streamlined operational workflows:
+
 - **Zero-Dependency Fallback:** Works 100% out of the box with zero runtime errors using built-in high-fidelity content when detached from the database.
 - **Full Cloud Synchronization:** Once connected to Supabase, it unlocks real-time CRM capabilities, dynamic CMS overrides, secure file attachments, and multi-user administrative dashboards.
 - **Precision Aesthetics:** Crafted with a bespoke design system featuring brand navy (`#062b52`), royal cyan (`#36b5e5`), and accent gold (`#f5c400`), smooth CSS transitions, glassmorphic HUDs, and animated orbital emblems.
@@ -102,23 +104,26 @@ flowchart TB
 ## 💎 Key Features
 
 ### 1. Client-Facing Public Platform
+
 - **Optimized Hero Section:** Compact, high-impact hero header featuring SVG orbital animations, dynamic chart lines, background particles, and quick-action consultation links.
 - **Interactive Navigation & Mega Menu:** Desktop dropdown mega-menu with instant service previews, thumbnails, and quick contact integrations; responsive mobile drawer navigation.
 - **Service Showcases:** Dedicated detail pages for each core practice:
-  - *Accounting Services*
-  - *Auditing & Financial Services*
-  - *Business Registration & Secretarial*
-  - *Business & Management Consulting*
-  - *IT & Technology Solutions*
+  - _Accounting Services_
+  - _Auditing & Financial Services_
+  - _Business Registration & Secretarial_
+  - _Business & Management Consulting_
+  - _IT & Technology Solutions_
 - **Insights & Editorial Center:** Searchable business insights and articles categorized by financial advisory, legal compliance, and technological modernization.
 - **Full SEO & Schema.org Metadata:** Automated JSON-LD `LocalBusiness` and `WebSite` structured data for search engine ranking.
 
 ---
 
 ### 2. Interactive Multi-Step Consultation Engine
+
 Path: `/consultation`
 
 A structured 6-step guided consultation intake form:
+
 1. **Service Selection:** Choose practice domain.
 2. **Dynamic Questionnaire:** Generates custom field sets tailored specifically to the chosen service (e.g., annual turnover for audits, registration type for incorporation).
 3. **Client Identification:** Name, business title, company name, email, phone, location.
@@ -129,9 +134,11 @@ A structured 6-step guided consultation intake form:
 ---
 
 ### 3. Executive Admin Portal & CRM
+
 Path: `/admin`
 
 A complete management suite for firm partners and managers:
+
 - **Executive Dashboard:** Live metrics for total consultations, pending reviews, converted clients, pipeline trends via interactive Recharts visualizations.
 - **Consultation Lifecycle Management:**
   - Multiple Views: **Data Grid Table**, **Drag-and-Drop Kanban Board**, and **Calendar Schedule**.
@@ -143,7 +150,9 @@ A complete management suite for firm partners and managers:
 ---
 
 ### 4. Dynamic Headless CMS
+
 Staff can customize the public website in real-time without modifying code or redeploying:
+
 - **Homepage Section Editor:** Toggle visibility and update copy for Hero, About, Why Choose Us, Timeline, and CTAs.
 - **Page Hero Overrides:** Manage inner page headers, breadcrumbs, and banner visuals.
 - **Service Configuration:** Create new practices or tweak service titles, descriptions, and dynamic intake questions.
@@ -156,12 +165,12 @@ Staff can customize the public website in real-time without modifying code or re
 
 ### 5. Enterprise RBAC & Security
 
-| Role | Access Level | Description |
-| :--- | :--- | :--- |
-| **Super Admin** | Full System Access | Manages team roles, system permissions, audit logs, and global parameters. |
-| **Admin** | Business Operator | Manages all CRM entities, CMS publications, clients, and leads. |
-| **Editor** | Content Specialist | Edits public website copy, blog posts, FAQs, services, and media assets. |
-| **Consultation Manager** | Client Relations | Handles incoming consultations, client follow-ups, and calendar bookings. |
+| Role                     | Access Level       | Description                                                                |
+| :----------------------- | :----------------- | :------------------------------------------------------------------------- |
+| **Super Admin**          | Full System Access | Manages team roles, system permissions, audit logs, and global parameters. |
+| **Admin**                | Business Operator  | Manages all CRM entities, CMS publications, clients, and leads.            |
+| **Editor**               | Content Specialist | Edits public website copy, blog posts, FAQs, services, and media assets.   |
+| **Consultation Manager** | Client Relations   | Handles incoming consultations, client follow-ups, and calendar bookings.  |
 
 - **Row Level Security (RLS):** Enforced at the PostgreSQL kernel level via `has_permission(auth.uid(), '...')`.
 - **Zero Secret Leakage:** The frontend exclusively utilizes the public Supabase `anon` key. All sensitive database manipulations occur inside PostgreSQL RPCs and trigger functions.
@@ -172,18 +181,21 @@ Staff can customize the public website in real-time without modifying code or re
 ## 🛠 Technology Stack
 
 ### Frontend Core
+
 - **Framework:** [React 19.2.6](https://react.dev/)
 - **Language:** [TypeScript 5.9.3](https://www.typescriptlang.org/)
 - **Bundler & Tooling:** [Vite 7.3.2](https://vitejs.dev/) with `@vitejs/plugin-react`
 - **Routing:** [React Router v7](https://reactrouter.com/) (Dual HashRouter / BrowserRouter support for offline filesystem preview or cloud hosting)
 
 ### Styling & UI
+
 - **CSS Engine:** [Tailwind CSS v4](https://tailwindcss.com/)
 - **Icons:** [Lucide React](https://lucide.dev/)
 - **Charts:** [Recharts 3.10.1](https://recharts.org/)
 - **Typography:** Plus Jakarta Sans (Display) & Inter (Sans-serif)
 
 ### Cloud Backend & Database
+
 - **Backend as a Service:** [Supabase](https://supabase.com/)
 - **Database:** PostgreSQL with Row Level Security, Custom Enums, Triggers, & Stored Procedures
 - **Authentication:** Supabase Auth (Email / Password + Session Recovery)
@@ -228,11 +240,13 @@ Staff can customize the public website in real-time without modifying code or re
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - **Node.js:** v18.0.0 or higher (v20+ recommended)
 - **Package Manager:** `npm` (v9+) or `pnpm` / `yarn`
 - Optional: Supabase CLI or active Supabase cloud account
 
 ### Installation
+
 Clone the repository and install project dependencies:
 
 ```bash
@@ -242,6 +256,7 @@ npm install
 ```
 
 ### Environment Variables
+
 Copy `.env.example` to `.env`:
 
 ```bash
@@ -262,6 +277,7 @@ VITE_INQUIRY_ENDPOINT=
 > **Note:** If `.env` is omitted, the frontend will automatically boot in standalone mode with complete functionality and static data fallbacks.
 
 ### Local Development
+
 Start the local Vite development server:
 
 ```bash
@@ -277,6 +293,7 @@ Visit [http://localhost:5173/](http://localhost:5173/) in your web browser.
 To enable the complete CMS, CRM, and authentication features:
 
 ### 1. Database Schema & Policies
+
 1. Log in to [Supabase Dashboard](https://supabase.com/dashboard) and create a new project.
 2. Navigate to **SQL Editor → New Query**.
 3. Copy the entire contents of [`supabase/schema.sql`](file:///e:/Priyankara%20ayya_Website/supabase/schema.sql) and execute it.
@@ -287,11 +304,14 @@ To enable the complete CMS, CRM, and authentication features:
    - Storage buckets and RLS access rules.
 
 ### 2. Storage Buckets Configuration
+
 Verify the buckets under **Storage**:
+
 - `consultation-uploads`: **Private** bucket for client attachments.
 - `media`: **Public** bucket for blog and CMS content imagery.
 
 ### 3. Super Admin Onboarding
+
 1. Go to `http://localhost:5173/admin/login`.
 2. Click **Request access** to register a new administrator.
 3. The **very first account** created in the database is automatically granted the `Super Admin` role via a database trigger.
@@ -302,6 +322,7 @@ Verify the buckets under **Storage**:
 ## 📦 Production Build & Deployment
 
 ### Build Command
+
 Compile the optimized production bundle:
 
 ```bash
@@ -311,6 +332,7 @@ npm run build
 This compiles optimized assets into the `dist/` directory.
 
 ### Preview Production Build
+
 ```bash
 npm run preview
 ```

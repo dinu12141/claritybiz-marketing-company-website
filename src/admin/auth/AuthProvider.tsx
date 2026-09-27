@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import type { Session, User } from "@supabase/supabase-js";
 import { logAuthEvent } from "@/admin/api";
-import { errorMessage, requireSupabase } from "@/lib/supabase";
+import { errorMessage, isSupabaseConfigured, requireSupabase } from "@/lib/supabase";
 import type { ProfileRow } from "@/lib/types";
 
 export type AuthStatus = "loading" | "signed_out" | "pending" | "ready";
@@ -24,6 +24,67 @@ type AuthContextValue = {
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+  if (!isSupabaseConfigured) {
+    const demoProfile: ProfileRow = {
+      id: "demo-admin",
+      full_name: "Super Administrator (Demo)",
+      email: "admin@claritycapital.lk",
+      phone: "+94714053449",
+      is_active: true,
+      role_id: "demo-role",
+      avatar_url: null,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      role: {
+        id: "demo-role",
+        name: "Super Admin",
+        key: "super_admin",
+        description: "Full administrative access across all modules",
+        is_system: true,
+        created_at: new Date().toISOString(),
+      },
+    };
+
+    const demoContext: AuthContextValue = {
+      status: "ready",
+      session: null,
+      user: { id: "demo-admin", email: "admin@claritycapital.lk" } as User,
+      profile: demoProfile,
+      permissions: new Set([
+        "dashboard.view",
+        "consultations.view",
+        "consultations.manage",
+        "leads.view",
+        "leads.manage",
+        "content.view",
+        "content.manage",
+        "services.manage",
+        "blog.manage",
+        "media.view",
+        "media.manage",
+        "seo.manage",
+        "notifications.view",
+        "users.manage",
+        "audit.view",
+        "settings.manage",
+      ]),
+      roleKey: "super_admin",
+      isSuperAdmin: true,
+      can: () => true,
+      signIn: async () => null,
+      signUp: async () => null,
+      signOut: async () => {
+        if (typeof window !== "undefined") {
+          sessionStorage.removeItem("TVC_ADMIN_DEMO");
+          window.location.href = "/admin/setup";
+        }
+      },
+      refreshProfile: async () => {},
+    };
+
+    return <AuthContext.Provider value={demoContext}>{children}</AuthContext.Provider>;
+  }
+
   const supabase = requireSupabase();
   const [session, setSession] = useState<Session | null>(null);
   const [sessionResolved, setSessionResolved] = useState(false);

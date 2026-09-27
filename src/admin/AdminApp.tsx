@@ -81,33 +81,109 @@ function AuthShell({ title, subtitle, children }: { title: string; subtitle: str
 /* ------------------------------------------------------------- setup */
 
 export function SetupPage() {
+  const [url, setUrl] = useState("");
+  const [anonKey, setAnonKey] = useState("");
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSaveConfig = (e: FormEvent) => {
+    e.preventDefault();
+    if (!url.trim() || !anonKey.trim()) {
+      setError("Please provide both Supabase Project URL and Anon Key.");
+      return;
+    }
+    saveBrowserSupabaseConfig(url.trim(), anonKey.trim());
+  };
+
+  const handleEnterDemo = () => {
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("TVC_ADMIN_DEMO", "true");
+      window.location.href = "/admin/dashboard";
+    }
+  };
+
   const steps = [
-    "Create a Supabase project and open the SQL editor.",
-    "Run supabase/schema.sql from this repository (tables, RLS policies, storage buckets, seeds).",
-    "Copy the project URL and anon key into a .env file as VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.",
-    "Rebuild and deploy. The first account that signs up becomes the Super Admin.",
+    "Create a free Supabase project at supabase.com.",
+    "Open the SQL Editor, copy and run the complete supabase/schema.sql script.",
+    "Copy the Project URL & Anon Key from Project Settings ➔ API.",
+    "Paste below OR configure as VITE_SUPABASE_URL & VITE_SUPABASE_ANON_KEY on Vercel.",
   ];
+
   return (
-    <AuthShell title="Admin portal not configured" subtitle="Connect a Supabase project to enable authentication, the CMS and the consultation CRM.">
-      <Card>
-        <div className="flex items-center gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-navy/10 text-navy">
-            <Database className="h-5 w-5" />
-          </span>
-          <p className="text-sm font-semibold text-ink">Setup checklist</p>
-        </div>
-        <ol className="mt-4 space-y-3">
-          {steps.map((step, index) => (
-            <li key={step} className="flex gap-3 text-sm text-slate-600">
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gold text-xs font-bold text-navy">{index + 1}</span>
-              {step}
-            </li>
-          ))}
-        </ol>
-        <p className="mt-5 rounded-lg bg-[#F4F7FB] px-3 py-2 text-xs text-slate-500">
-          The public website continues to work with its built-in content until the connection is configured. Never place a service-role key in the frontend.
-        </p>
-      </Card>
+    <AuthShell
+      title="cPanel & Admin Portal Setup"
+      subtitle="Connect your Supabase database or explore in demo mode."
+    >
+      <div className="space-y-4">
+        {/* Instant Database Connector */}
+        <Card>
+          <div className="flex items-center gap-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-navy/10 text-navy">
+              <Database className="h-5 w-5" />
+            </span>
+            <div>
+              <p className="text-sm font-bold text-ink">Connect Live Database</p>
+              <p className="text-xs text-slate-500">Connect your Supabase project directly</p>
+            </div>
+          </div>
+
+          <form onSubmit={handleSaveConfig} className="mt-4 space-y-3">
+            {error && <p className="rounded-lg bg-red-50 p-2.5 text-xs text-red-600">{error}</p>}
+            <Field label="Supabase Project URL" hint="e.g. https://your-project.supabase.co">
+              <Input
+                type="url"
+                required
+                placeholder="https://xyzcompany.supabase.co"
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+              />
+            </Field>
+            <Field label="Supabase Anon Key" hint="Public browser key (eyJ...)">
+              <Input
+                type="password"
+                required
+                placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6..."
+                value={anonKey}
+                onChange={(e) => setAnonKey(e.target.value)}
+              />
+            </Field>
+            <AdminButton type="submit" variant="primary" className="w-full">
+              Save &amp; Connect Database
+            </AdminButton>
+          </form>
+        </Card>
+
+        {/* Demo Mode Button */}
+        <Card className="border-gold/50 bg-gradient-to-br from-amber-50/50 to-white">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <p className="text-sm font-bold text-ink">Explore in Demo Sandbox Mode</p>
+              <p className="text-xs text-slate-600">Test the cPanel, CMS, and CRM right now without database setup.</p>
+            </div>
+            <button
+              type="button"
+              onClick={handleEnterDemo}
+              className="inline-flex shrink-0 items-center rounded-xl bg-gold px-3.5 py-2 text-xs font-bold text-navy shadow-sm transition-colors hover:bg-gold-dark"
+            >
+              Launch Demo
+            </button>
+          </div>
+        </Card>
+
+        {/* Setup checklist */}
+        <Card>
+          <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Quick Guide for Vercel</p>
+          <ol className="mt-3 space-y-2">
+            {steps.map((step, index) => (
+              <li key={step} className="flex gap-2.5 text-xs text-slate-600">
+                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-navy text-[10px] font-bold text-white">
+                  {index + 1}
+                </span>
+                <span>{step}</span>
+              </li>
+            ))}
+          </ol>
+        </Card>
+      </div>
     </AuthShell>
   );
 }
@@ -290,14 +366,15 @@ function AdminNotFound() {
 /* --------------------------------------------------------------- app */
 
 export function AdminApp() {
-  if (!isSupabaseConfigured) return <SetupPage />;
+  const isDemo = typeof window !== "undefined" && sessionStorage.getItem("TVC_ADMIN_DEMO") === "true";
 
   return (
     <ToastProvider>
       <AuthProvider>
         <Routes>
-          <Route path="login" element={<LoginPage />} />
-          <Route element={<RequireAuth />}>
+          <Route path="setup" element={<SetupPage />} />
+          <Route path="login" element={!isSupabaseConfigured && !isDemo ? <Navigate to="/admin/setup" replace /> : <LoginPage />} />
+          <Route element={!isSupabaseConfigured && !isDemo ? <Navigate to="/admin/setup" replace /> : <RequireAuth />}>
             <Route index element={<Navigate to="dashboard" replace />} />
             <Route path="dashboard" element={<Guard permission="dashboard.view"><DashboardPage /></Guard>} />
             <Route path="consultations" element={<Guard permission="consultations.view"><ConsultationsPage /></Guard>} />

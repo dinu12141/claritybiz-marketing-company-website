@@ -25,6 +25,7 @@ import { useAuth } from "@/admin/auth/AuthProvider";
 import { Avatar, useToast } from "@/admin/components/ui";
 import { LogoImage } from "@/components/ui/Logo";
 import { site } from "@/data/site";
+import { isSupabaseConfigured } from "@/lib/supabase";
 import { cn } from "@/utils/cn";
 
 type NavChild = { label: string; to: string };
@@ -258,6 +259,17 @@ export function AdminLayout() {
             )}
           </div>
         </header>
+        {!isSupabaseConfigured && (
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-amber-200 bg-amber-50 px-4 py-2 text-xs text-amber-900 sm:px-8">
+            <div className="flex items-center gap-2">
+              <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-gold text-[11px] font-bold text-navy">!</span>
+              <span><strong>Sandbox Demo Mode Active:</strong> You are exploring the admin portal with simulated data. Connect your live Supabase database to synchronize with production.</span>
+            </div>
+            <Link to="/admin/setup" className="font-bold text-navy underline hover:text-royal">
+              Connect Supabase Database →
+            </Link>
+          </div>
+        )}
         <main className="px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
           <div className="mx-auto max-w-[1400px]">
             <Outlet />

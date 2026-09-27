@@ -1,5 +1,26 @@
 import { useMemo } from "react";
-import { ArrowRight, Bell, CalendarClock, ChartColumn, CircleCheck, Clock, Inbox, Search, TrendingUp, Users } from "lucide-react";
+import {
+  ArrowRight,
+  Bell,
+  Briefcase,
+  CalendarClock,
+  ChartColumn,
+  CircleCheck,
+  Clock,
+  ExternalLink,
+  FileText,
+  Globe,
+  Images,
+  Inbox,
+  Newspaper,
+  ScrollText,
+  Search,
+  Settings,
+  ShieldCheck,
+  Sliders,
+  TrendingUp,
+  Users,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { fetchDashboardData } from "@/admin/api";
@@ -8,6 +29,80 @@ import { AdminButton, Card, CardHeader, EmptyState, ErrorState, PageHeader, Prio
 import { formatDate, monthLabel, timeAgo, useAsync } from "@/admin/utils";
 import { CONSULTATION_STATUSES, type Tone } from "@/data/consultation";
 import type { ConsultationRow } from "@/lib/types";
+import { cn } from "@/utils/cn";
+
+const cPanelApps = [
+  {
+    title: "Website Content",
+    subtitle: "Hero, About, Process, CTAs",
+    to: "/admin/content/home",
+    icon: FileText,
+    bg: "bg-blue-600",
+  },
+  {
+    title: "Services & Forms",
+    subtitle: "5 Practices & Custom Fields",
+    to: "/admin/services",
+    icon: Briefcase,
+    bg: "bg-indigo-600",
+  },
+  {
+    title: "Consultations CRM",
+    subtitle: "Inquiry Pipeline & Status",
+    to: "/admin/consultations",
+    icon: Inbox,
+    bg: "bg-cyan-600",
+  },
+  {
+    title: "Leads & Clients",
+    subtitle: "Customer Directory & Logs",
+    to: "/admin/leads",
+    icon: Users,
+    bg: "bg-emerald-600",
+  },
+  {
+    title: "Blog & Insights",
+    subtitle: "Publish Articles & Guides",
+    to: "/admin/blog",
+    icon: Newspaper,
+    bg: "bg-amber-600",
+  },
+  {
+    title: "Media Library",
+    subtitle: "Image & File Storage",
+    to: "/admin/media",
+    icon: Images,
+    bg: "bg-purple-600",
+  },
+  {
+    title: "SEO Management",
+    subtitle: "Meta Tags, Google Snippets",
+    to: "/admin/seo",
+    icon: Globe,
+    bg: "bg-teal-600",
+  },
+  {
+    title: "Site Settings",
+    subtitle: "Hotlines, WhatsApp, Address",
+    to: "/admin/settings",
+    icon: Settings,
+    bg: "bg-slate-700",
+  },
+  {
+    title: "Users & Roles",
+    subtitle: "Staff Permissions Matrix",
+    to: "/admin/users",
+    icon: ShieldCheck,
+    bg: "bg-rose-600",
+  },
+  {
+    title: "Audit & Logs",
+    subtitle: "Security & System Activity",
+    to: "/admin/activity",
+    icon: ScrollText,
+    bg: "bg-slate-600",
+  },
+];
 
 const toneHex: Record<Tone, string> = {
   gray: "#94A3B8",
@@ -141,13 +236,69 @@ export function DashboardPage() {
         title={firstName ? `Welcome back, ${firstName}` : "Dashboard"}
         description="A live overview of consultation requests, leads and activity."
         actions={
-          <Link to="/admin/consultations">
-            <AdminButton variant="secondary" icon={Inbox}>
-              Open consultations
-            </AdminButton>
-          </Link>
+          <div className="flex items-center gap-2">
+            <Link to="/" target="_blank">
+              <AdminButton variant="secondary" icon={Globe}>
+                Live Site
+              </AdminButton>
+            </Link>
+            <Link to="/admin/consultations">
+              <AdminButton variant="secondary" icon={Inbox}>
+                Open consultations
+              </AdminButton>
+            </Link>
+          </div>
         }
       />
+
+      {/* cPanel Webmaster Control Center */}
+      <div className="mb-6 overflow-hidden rounded-2xl border border-slate-200/80 bg-gradient-to-r from-navy via-navy-deep to-navy p-5 text-white shadow-card">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3">
+            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 text-gold ring-1 ring-white/15">
+              <Sliders className="h-5 w-5" />
+            </span>
+            <div>
+              <div className="flex items-center gap-2">
+                <h2 className="font-display text-base font-bold text-white">cPanel Control Center</h2>
+                <span className="rounded-full bg-emerald-500/20 px-2 py-0.5 text-[10px] font-bold text-emerald-300 ring-1 ring-emerald-500/30">
+                  Online
+                </span>
+              </div>
+              <p className="text-xs text-white/70">
+                Direct access to manage public content, CMS pages, services, media, and search settings.
+              </p>
+            </div>
+          </div>
+          <Link
+            to="/admin/settings"
+            className="inline-flex items-center gap-1.5 rounded-lg bg-gold px-3.5 py-1.5 text-xs font-bold text-navy shadow-sm transition-colors hover:bg-gold-dark"
+          >
+            <Settings className="h-3.5 w-3.5" /> Site Configuration
+          </Link>
+        </div>
+
+        <div className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-5">
+          {cPanelApps.map((app) => (
+            <Link
+              key={app.title}
+              to={app.to}
+              className="group flex flex-col justify-between rounded-xl bg-white/5 p-3 ring-1 ring-white/10 transition-all hover:-translate-y-0.5 hover:bg-white/12 hover:ring-gold/50"
+            >
+              <div className="flex items-center justify-between">
+                <span className={cn("flex h-7 w-7 items-center justify-center rounded-lg text-white shadow-sm", app.bg)}>
+                  <app.icon className="h-3.5 w-3.5" />
+                </span>
+                <ArrowRight className="h-3 w-3 text-white/40 opacity-0 transition-opacity group-hover:opacity-100" />
+              </div>
+              <div className="mt-2.5">
+                <p className="text-xs font-bold text-white transition-colors group-hover:text-gold">{app.title}</p>
+                <p className="line-clamp-1 text-[10.5px] text-white/60">{app.subtitle}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
         <StatCard label="New Consultations" value={stats.byStatus.new ?? 0} icon={Inbox} tone="cyan" loading={loading} />

@@ -1,4 +1,4 @@
-import { STORAGE_BUCKETS, requireSupabase } from "@/lib/supabase";
+import { STORAGE_BUCKETS, isSupabaseConfigured, requireSupabase } from "@/lib/supabase";
 import type {
   AuditLogRow,
   BlogPostRow,
@@ -37,6 +37,106 @@ function unwrap<T>(result: Result<T>): T {
 
 const sanitizeSearch = (value: string) => value.replace(/[,()%]/g, " ").trim();
 
+export const SAMPLE_DEMO_CONSULTATIONS: ConsultationRow[] = [
+  {
+    id: "demo-1",
+    reference: "TVC-2026-00001",
+    service_id: "s-1",
+    service_name: "Accounting Services",
+    service_slug: "accounting",
+    client_name: "Kamal Perera",
+    business_name: "Perera & Sons Trading",
+    phone: "077 123 4567",
+    whatsapp: "077 123 4567",
+    email: "kamal@pereratrading.lk",
+    city: "Monaragala",
+    status: "new",
+    priority: "high",
+    assigned_to: "demo-admin",
+    preferred_channel: "phone",
+    preferred_date: new Date().toISOString().slice(0, 10),
+    preferred_time_slot: "morning",
+    summary: "Need ongoing monthly bookkeeping and tax filing for retail wholesale business.",
+    notes_count: 1,
+    attachments_count: 2,
+    created_at: new Date(Date.now() - 3600000 * 4).toISOString(),
+    updated_at: new Date(Date.now() - 3600000 * 2).toISOString(),
+  },
+  {
+    id: "demo-2",
+    reference: "TVC-2026-00002",
+    service_id: "s-2",
+    service_name: "Business Registration",
+    service_slug: "business-registration",
+    client_name: "Nimali Silva",
+    business_name: "Ceylon Green Agro Pvt Ltd",
+    phone: "071 987 6543",
+    whatsapp: "071 987 6543",
+    email: "nimali@ceylongreen.lk",
+    city: "Buttala",
+    status: "contacted",
+    priority: "medium",
+    assigned_to: "demo-admin",
+    preferred_channel: "whatsapp",
+    preferred_date: new Date(Date.now() + 86400000).toISOString().slice(0, 10),
+    preferred_time_slot: "afternoon",
+    summary: "Registering a new Private Limited company for agricultural export.",
+    notes_count: 2,
+    attachments_count: 1,
+    created_at: new Date(Date.now() - 86400000 * 2).toISOString(),
+    updated_at: new Date(Date.now() - 86400000).toISOString(),
+  },
+  {
+    id: "demo-3",
+    reference: "TVC-2026-00003",
+    service_id: "s-3",
+    service_name: "Auditing & Financial Services",
+    service_slug: "auditing-financial-services",
+    client_name: "Sunil Bandara",
+    business_name: "Uva Logistics Services",
+    phone: "075 555 1234",
+    whatsapp: "075 555 1234",
+    email: "sunil@uvalogistics.lk",
+    city: "Wellawaya",
+    status: "consultation_scheduled",
+    priority: "high",
+    scheduled_at: new Date(Date.now() + 86400000 * 3).toISOString(),
+    assigned_to: "demo-admin",
+    preferred_channel: "in_person",
+    preferred_date: new Date(Date.now() + 86400000 * 3).toISOString().slice(0, 10),
+    preferred_time_slot: "morning",
+    summary: "Annual financial statement audit and bank submission review.",
+    notes_count: 3,
+    attachments_count: 3,
+    created_at: new Date(Date.now() - 86400000 * 4).toISOString(),
+    updated_at: new Date(Date.now() - 86400000 * 2).toISOString(),
+  },
+  {
+    id: "demo-4",
+    reference: "TVC-2026-00004",
+    service_id: "s-4",
+    service_name: "IT Solutions",
+    service_slug: "it-solutions",
+    client_name: "Ruwan Jayasinghe",
+    business_name: "Jayasinghe Super Center",
+    phone: "070 444 8888",
+    whatsapp: "070 444 8888",
+    email: "ruwan@jayasinghe.lk",
+    city: "Monaragala",
+    status: "converted",
+    priority: "medium",
+    assigned_to: "demo-admin",
+    preferred_channel: "in_person",
+    preferred_date: new Date(Date.now() - 86400000 * 7).toISOString().slice(0, 10),
+    preferred_time_slot: "afternoon",
+    summary: "Point of Sale software and network cabling setup.",
+    notes_count: 2,
+    attachments_count: 0,
+    created_at: new Date(Date.now() - 86400000 * 10).toISOString(),
+    updated_at: new Date(Date.now() - 86400000 * 5).toISOString(),
+  },
+];
+
 /* ======================================================= consultations */
 
 export type ConsultationSort = "created_desc" | "created_asc" | "updated_desc" | "priority_desc";
@@ -53,6 +153,13 @@ export type ConsultationListParams = {
 };
 
 export async function listConsultations(params: ConsultationListParams): Promise<{ rows: ConsultationRow[]; total: number }> {
+  if (!isSupabaseConfigured) {
+    let rows = [...SAMPLE_DEMO_CONSULTATIONS];
+    if (params.status) rows = rows.filter((r) => r.status === params.status);
+    if (params.service) rows = rows.filter((r) => r.service_slug === params.service);
+    if (params.priority) rows = rows.filter((r) => r.priority === params.priority);
+    return { rows, total: rows.length };
+  }
   const from = (params.page - 1) * params.pageSize;
   let query = sb().from("consultations").select("*", { count: "exact" });
   if (params.status) query = query.eq("status", params.status);
@@ -85,10 +192,12 @@ export async function listConsultations(params: ConsultationListParams): Promise
 }
 
 export async function listAllConsultations(limit = 1000): Promise<ConsultationRow[]> {
+  if (!isSupabaseConfigured) return SAMPLE_DEMO_CONSULTATIONS;
   return unwrap<ConsultationRow[]>(await sb().from("consultations").select("*").order("created_at", { ascending: false }).limit(limit));
 }
 
 export async function listConsultationsForMonth(monthStart: Date): Promise<ConsultationRow[]> {
+  if (!isSupabaseConfigured) return SAMPLE_DEMO_CONSULTATIONS;
   const start = new Date(monthStart.getFullYear(), monthStart.getMonth(), 1);
   const end = new Date(monthStart.getFullYear(), monthStart.getMonth() + 1, 1);
   const startIso = start.toISOString();
@@ -107,6 +216,9 @@ export async function listConsultationsForMonth(monthStart: Date): Promise<Consu
 }
 
 export async function getConsultation(id: string): Promise<ConsultationRow> {
+  if (!isSupabaseConfigured) {
+    return SAMPLE_DEMO_CONSULTATIONS.find((c) => c.id === id) || SAMPLE_DEMO_CONSULTATIONS[0];
+  }
   return unwrap<ConsultationRow>(await sb().from("consultations").select("*").eq("id", id).single());
 }
 
@@ -119,6 +231,26 @@ export type ConsultationBundle = {
 };
 
 export async function getConsultationBundle(id: string): Promise<ConsultationBundle> {
+  if (!isSupabaseConfigured) {
+    const consultation = SAMPLE_DEMO_CONSULTATIONS.find((c) => c.id === id) || SAMPLE_DEMO_CONSULTATIONS[0];
+    return {
+      consultation,
+      answers: [],
+      attachments: [],
+      notes: [],
+      activity: [
+        {
+          id: "demo-act-1",
+          consultation_id: consultation.id,
+          actor_id: null,
+          actor_name: "Client via Online Portal",
+          action: "status_changed",
+          description: "Consultation submitted via web form",
+          created_at: consultation.created_at,
+        },
+      ],
+    };
+  }
   const client = sb();
   const [consultation, answers, attachments, notes, activity] = await Promise.all([
     client.from("consultations").select("*").eq("id", id).single(),
@@ -202,24 +334,82 @@ export async function deleteAttachment(attachment: ConsultationAttachmentRow): P
 /* ============================================================== staff */
 
 export async function listStaff(): Promise<ProfileRow[]> {
+  if (!isSupabaseConfigured) return listProfiles();
   return unwrap<ProfileRow[]>(await sb().from("profiles").select("*, role:roles(*)").eq("is_active", true).order("full_name"));
 }
 
 /* ============================================================== leads */
 
 export async function listLeads(): Promise<LeadRow[]> {
+  if (!isSupabaseConfigured) {
+    return [
+      {
+        id: "lead-1",
+        full_name: "Kamal Perera",
+        business_name: "Perera & Sons Trading",
+        phone: "077 123 4567",
+        whatsapp: "077 123 4567",
+        email: "kamal@pereratrading.lk",
+        city: "Monaragala",
+        status: "active",
+        source: "consultation_form",
+        notes: null,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      },
+    ];
+  }
   return unwrap<LeadRow[]>(await sb().from("leads").select("*").order("created_at", { ascending: false }));
 }
 
 export async function updateLead(id: string, patch: Partial<LeadRow>): Promise<LeadRow> {
+  if (!isSupabaseConfigured) return { id, ...patch } as LeadRow;
   return unwrap<LeadRow>(await sb().from("leads").update(patch).eq("id", id).select("*").single());
 }
 
 export async function listClients(): Promise<ClientRow[]> {
+  if (!isSupabaseConfigured) {
+    return [
+      {
+        id: "client-1",
+        lead_id: "lead-1",
+        full_name: "Ruwan Jayasinghe",
+        business_name: "Jayasinghe Super Center",
+        phone: "070 444 8888",
+        whatsapp: "070 444 8888",
+        email: "ruwan@jayasinghe.lk",
+        city: "Monaragala",
+        status: "active",
+        company_reg_number: "PV-123456",
+        notes: "IT & Accounting client",
+        converted_at: new Date().toISOString(),
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      },
+    ];
+  }
   return unwrap<ClientRow[]>(await sb().from("clients").select("*").order("converted_at", { ascending: false }));
 }
 
 export async function createClientFromLead(lead: LeadRow): Promise<ClientRow> {
+  if (!isSupabaseConfigured) {
+    return {
+      id: "client-new",
+      lead_id: lead.id,
+      full_name: lead.full_name,
+      business_name: lead.business_name,
+      phone: lead.phone,
+      whatsapp: lead.whatsapp,
+      email: lead.email,
+      city: lead.city,
+      status: "active",
+      company_reg_number: null,
+      notes: null,
+      converted_at: new Date().toISOString(),
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+  }
   const client = unwrap<ClientRow>(
     await sb()
       .from("clients")
@@ -240,6 +430,7 @@ export async function createClientFromLead(lead: LeadRow): Promise<ClientRow> {
 }
 
 export async function consultationCountsByLead(): Promise<Record<string, number>> {
+  if (!isSupabaseConfigured) return { "lead-1": 1 };
   const rows = unwrap<{ lead_id: string | null }[]>(await sb().from("consultations").select("lead_id"));
   const counts: Record<string, number> = {};
   rows.forEach((row) => {
@@ -492,6 +683,7 @@ export async function markAllNotificationsRead(): Promise<void> {
 }
 
 export function subscribeToNotifications(onInsert: (row: NotificationRow) => void): () => void {
+  if (!isSupabaseConfigured) return () => {};
   const client = sb();
   const channel = client
     .channel("admin-notifications")
@@ -507,27 +699,66 @@ export function subscribeToNotifications(onInsert: (row: NotificationRow) => voi
 /* ------------------------------------------------------ users & roles */
 
 export async function listProfiles(): Promise<ProfileRow[]> {
+  if (!isSupabaseConfigured) {
+    return [
+      {
+        id: "demo-admin",
+        full_name: "Super Administrator (Demo)",
+        email: "admin@claritycapital.lk",
+        phone: "+94714053449",
+        is_active: true,
+        role_id: "demo-role",
+        avatar_url: null,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        role: {
+          id: "demo-role",
+          name: "Super Admin",
+          key: "super_admin",
+          description: "Full system administration in demo mode",
+          is_system: true,
+          created_at: new Date().toISOString(),
+        },
+      },
+    ];
+  }
   return unwrap<ProfileRow[]>(await sb().from("profiles").select("*, role:roles(*)").order("created_at"));
 }
 
 export async function updateProfile(id: string, patch: Partial<Pick<ProfileRow, "full_name" | "role_id" | "is_active">>): Promise<void> {
+  if (!isSupabaseConfigured) return;
   const { error } = await sb().from("profiles").update(patch).eq("id", id);
   if (error) throw new Error(error.message);
 }
 
 export async function listRoles(): Promise<RoleRow[]> {
+  if (!isSupabaseConfigured) {
+    return [
+      {
+        id: "demo-role",
+        name: "Super Admin",
+        key: "super_admin",
+        description: "Full system administration",
+        is_system: true,
+        created_at: new Date().toISOString(),
+      },
+    ];
+  }
   return unwrap<RoleRow[]>(await sb().from("roles").select("*").order("name"));
 }
 
 export async function listPermissions(): Promise<PermissionRow[]> {
+  if (!isSupabaseConfigured) return [];
   return unwrap<PermissionRow[]>(await sb().from("permissions").select("*").order("module").order("key"));
 }
 
 export async function listRolePermissions(): Promise<RolePermissionRow[]> {
+  if (!isSupabaseConfigured) return [];
   return unwrap<RolePermissionRow[]>(await sb().from("role_permissions").select("*"));
 }
 
 export async function setRolePermission(roleId: string, permissionId: string, granted: boolean): Promise<void> {
+  if (!isSupabaseConfigured) return;
   if (granted) {
     const { error } = await sb().from("role_permissions").upsert({ role_id: roleId, permission_id: permissionId }, { onConflict: "role_id,permission_id" });
     if (error) throw new Error(error.message);
@@ -540,6 +771,7 @@ export async function setRolePermission(roleId: string, permissionId: string, gr
 /* -------------------------------------------------------------- audit */
 
 export async function listAuditLogs(params: { page: number; pageSize: number; action?: string; resource?: string }): Promise<{ rows: AuditLogRow[]; total: number }> {
+  if (!isSupabaseConfigured) return { rows: [], total: 0 };
   const from = (params.page - 1) * params.pageSize;
   let query = sb().from("audit_logs").select("*", { count: "exact" }).order("created_at", { ascending: false });
   if (params.action) query = query.eq("action", params.action);
@@ -550,12 +782,18 @@ export async function listAuditLogs(params: { page: number; pageSize: number; ac
 }
 
 export async function logAuthEvent(event: "login" | "logout"): Promise<void> {
+  if (!isSupabaseConfigured) return;
   await sb().rpc("log_auth_event", { p_event: event });
 }
 
-/* ---------------------------------------------------------- dashboard */
-
 export async function fetchDashboardData(): Promise<{ consultations: ConsultationRow[]; leadsCount: number; unread: number }> {
+  if (!isSupabaseConfigured) {
+    return {
+      consultations: SAMPLE_DEMO_CONSULTATIONS,
+      leadsCount: 4,
+      unread: 1,
+    };
+  }
   const client = sb();
   const [consultations, leads, unread] = await Promise.all([
     client.from("consultations").select("*").order("created_at", { ascending: false }).limit(2000),
