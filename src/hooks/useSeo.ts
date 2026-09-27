@@ -38,16 +38,16 @@ export const buildLocalBusinessSchema = () => ({
   "@context": "https://schema.org",
   "@type": ["AccountingService", "FinancialService", "ProfessionalService"],
   name: site.name,
-  alternateName: site.shortName,
+  alternateName: ["Claritify", "Claritify Marketing", "Claritybiz", "Claritybizz", "TV Clarity Capital", "Clarity Capital"],
   slogan: site.tagline,
   description: site.description,
-  image: "https://claritybiz-marketing-company-website.vercel.app/og-image.jpg",
+  image: "https://claritybizz.com/og-image.jpg",
   telephone: site.phoneE164,
   priceRange: "$$",
   currenciesAccepted: "LKR, USD",
   paymentAccepted: "Cash, Bank Transfer, Online",
   ...(site.email ? { email: site.email } : {}),
-  url: typeof window !== "undefined" ? window.location.origin : "https://claritybiz-marketing-company-website.vercel.app",
+  url: typeof window !== "undefined" ? window.location.origin : "https://claritybizz.com",
   sameAs: [site.facebookUrl, ...site.socials.map((social) => social.url)].filter(Boolean),
   address: {
     "@type": "PostalAddress",
@@ -77,8 +77,9 @@ export const buildLocalBusinessSchema = () => ({
   ],
   hasOfferCatalog: {
     "@type": "OfferCatalog",
-    name: "Business, Finance & IT Services",
+    name: "Business Marketing, Finance & IT Services",
     itemListElement: [
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Business Marketing & Growth", description: "Strategic marketing, branding and digital promotion for companies." } },
       { "@type": "Offer", itemOffered: { "@type": "Service", name: "Accounting Services", description: "Accurate financial records, bookkeeping and financial clarity." } },
       { "@type": "Offer", itemOffered: { "@type": "Service", name: "Auditing & Financial Services", description: "Structured financial auditing, compliance and control." } },
       { "@type": "Offer", itemOffered: { "@type": "Service", name: "Business Registration", description: "Private Limited company incorporation and secretarial support in Sri Lanka." } },
@@ -86,7 +87,7 @@ export const buildLocalBusinessSchema = () => ({
       { "@type": "Offer", itemOffered: { "@type": "Service", name: "IT Solutions", description: "Digital transformation, web applications and software solutions for business." } },
     ],
   },
-  knowsAbout: ["Accounting", "Auditing", "Business Registration", "Business Consulting", "IT Solutions", "Tax Advisory", "Bookkeeping"],
+  knowsAbout: ["Claritify", "Business Marketing", "Digital Marketing", "Accounting", "Auditing", "Business Registration", "Business Consulting", "IT Solutions", "Tax Advisory", "Bookkeeping", "Web Development", "Company Incorporation"],
 });
 
 /**

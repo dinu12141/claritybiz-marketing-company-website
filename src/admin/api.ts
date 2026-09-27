@@ -1,4 +1,5 @@
 import { STORAGE_BUCKETS, isSupabaseConfigured, requireSupabase } from "@/lib/supabase";
+import { FILE_SECURITY, sanitizeFilename, validateUploadedFile } from "@/lib/security";
 import type {
   AuditLogRow,
   BlogPostRow,
@@ -599,9 +600,18 @@ export async function listMedia(): Promise<MediaRow[]> {
   return unwrap<MediaRow[]>(await sb().from("media").select("*").order("created_at", { ascending: false }));
 }
 
-const safeName = (name: string) => name.replace(/[^a-zA-Z0-9._-]+/g, "_").slice(-100);
+const safeName = (name: string) => sanitizeFilename(name).replace(/[^a-zA-Z0-9._-]+/g, "_").slice(-100);
 
 export async function uploadMedia(file: File, kind: MediaKind, userId: string, altText?: string): Promise<MediaRow> {
+  const securityCheck = validateUploadedFile(
+    file,
+    FILE_SECURITY.ALLOWED_MEDIA_EXTENSIONS,
+    FILE_SECURITY.MAX_MEDIA_FILE_SIZE_BYTES
+  );
+  if (!securityCheck.valid) {
+    throw new Error(securityCheck.error ?? "Invalid file format or size limit exceeded.");
+  }
+
   const path = `${kind}/${Date.now()}-${safeName(file.name)}`;
   const storage = sb().storage.from(STORAGE_BUCKETS.media);
   const { error: uploadError } = await storage.upload(path, file, { contentType: file.type, upsert: false });

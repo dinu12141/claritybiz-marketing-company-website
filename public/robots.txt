@@ -1,5 +1,5 @@
-# Robots.txt for TV Clarity Capital (Pvt) Ltd
-# Website: https://claritybiz-marketing-company-website.vercel.app
+# Robots.txt for TV Clarity Capital (Pvt) Ltd (Claritify)
+# Website: https://claritybizz.com
 
 User-agent: *
 Allow: /
@@ -7,4 +7,4 @@ Disallow: /admin/
 Disallow: /admin
 
 # Sitemaps
-Sitemap: https://claritybiz-marketing-company-website.vercel.app/sitemap.xml
+Sitemap: https://claritybizz.com/sitemap.xml

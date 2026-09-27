@@ -2,6 +2,7 @@ import { ALLOWED_UPLOAD_TYPES, MAX_UPLOAD_FILES, MAX_UPLOAD_SIZE, contactMethodL
 import { site, whatsappWithMessage } from "@/data/site";
 import { STORAGE_BUCKETS, errorMessage, supabase } from "@/lib/supabase";
 import type { ContactMethod } from "@/lib/types";
+import { sanitizeFilename, validateUploadedFile } from "@/lib/security";
 
 export type AnswerEntry = { key: string; label: string; answer: string };
 
@@ -33,17 +34,16 @@ export type SubmissionResult = {
   uploadWarnings: string[];
 };
 
-/** Validates a set of files against size, count and type limits. Returns an error message or null. */
+/** Validates a set of files against size, count, executable blocking, and type limits. Returns an error message or null. */
 export function validateFiles(existing: File[], incoming: File[]): string | null {
   if (existing.length + incoming.length > MAX_UPLOAD_FILES) {
     return `You can attach up to ${MAX_UPLOAD_FILES} files.`;
   }
   for (const file of incoming) {
-    if (file.size > MAX_UPLOAD_SIZE) {
-      return `"${file.name}" is larger than ${Math.round(MAX_UPLOAD_SIZE / 1024 / 1024)} MB.`;
-    }
-    if (!ALLOWED_UPLOAD_TYPES[file.type]) {
-      return `"${file.name}" is not a supported file type. Allowed: ${Object.values(ALLOWED_UPLOAD_TYPES).join(", ")}.`;
+    // Strict security check: blocks executable files, scripts, double extensions & checks size
+    const check = validateUploadedFile(file);
+    if (!check.valid) {
+      return check.error ?? `"${file.name}" is not permitted.`;
     }
     if (existing.some((item) => item.name === file.name && item.size === file.size)) {
       return `"${file.name}" has already been added.`;
@@ -57,7 +57,7 @@ const randomId = () =>
     ? crypto.randomUUID()
     : `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 10)}`;
 
-const safeFileName = (name: string) => name.replace(/[^a-zA-Z0-9._-]+/g, "_").slice(-120);
+const safeFileName = (name: string) => sanitizeFilename(name).replace(/[^a-zA-Z0-9._-]+/g, "_").slice(-120);
 
 const provisionalReference = () =>
   `TVC-${new Date().getFullYear()}-${String(Math.floor(10000 + Math.random() * 89999))}`;
@@ -78,23 +78,28 @@ export async function submitConsultation(data: ConsultationSubmission, files: Fi
     p: {
       service_slug: data.serviceSlug,
       service_name: data.serviceName,
-      client_name: data.client.fullName.trim(),
-      business_name: data.client.businessName.trim() || null,
+      client_name: sanitizeText(data.client.fullName),
+      business_name: data.client.businessName ? sanitizeText(data.client.businessName) : null,
       phone: data.client.phone.trim(),
-      whatsapp: data.client.whatsapp.trim() || null,
-      email: data.client.email.trim() || null,
-      city: data.client.city.trim() || null,
+      whatsapp: data.client.whatsapp ? data.client.whatsapp.trim() : null,
+      email: data.client.email ? data.client.email.trim() : null,
+      city: data.client.city ? sanitizeText(data.client.city) : null,
       preferred_contact: data.contact.method,
       preferred_date: data.contact.date || null,
       preferred_time: data.contact.time || null,
       preferred_timezone: data.contact.timezone || null,
-      summary: data.answers
-        .filter((entry) => entry.answer)
-        .map((entry) => `${entry.label}: ${entry.answer}`)
-        .join("\n")
-        .slice(0, 4000),
+      summary: sanitizeText(
+        data.answers
+          .filter((entry) => entry.answer)
+          .map((entry) => `${entry.label}: ${entry.answer}`)
+          .join("\n")
+      ).slice(0, 4000),
       source: "website",
-      answers: data.answers,
+      answers: data.answers.map((a) => ({
+        key: a.key,
+        label: a.label,
+        answer: sanitizeText(a.answer),
+      })),
     },
   });
   if (error) throw new Error(error.message);

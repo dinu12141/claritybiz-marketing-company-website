@@ -18,27 +18,11 @@ export const serviceOptions: string[] = [
   "General Inquiry / Not Sure Yet",
 ];
 
-const PHONE_PATTERN = /^\+?[0-9\s\-()]{9,16}$/;
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+import { sanitizeText, validateInquirySchema } from "@/lib/security";
 
 export function validateInquiry(values: InquiryPayload): InquiryErrors {
-  const errors: InquiryErrors = {};
-  if (values.fullName.trim().length < 2) {
-    errors.fullName = "Please enter your full name.";
-  }
-  if (!PHONE_PATTERN.test(values.phone.trim())) {
-    errors.phone = "Please enter a valid phone number (e.g. 071 405 3449).";
-  }
-  if (values.email.trim() && !EMAIL_PATTERN.test(values.email.trim())) {
-    errors.email = "Please enter a valid email address.";
-  }
-  if (!values.service) {
-    errors.service = "Please select the service you require.";
-  }
-  if (values.message.trim().length < 10) {
-    errors.message = "Please describe your requirement in a few words (at least 10 characters).";
-  }
-  return errors;
+  const result = validateInquirySchema(values);
+  return result.errors as InquiryErrors;
 }
 
 /**
@@ -58,13 +42,13 @@ export async function submitInquiry(payload: InquiryPayload): Promise<{ delivere
       p: {
         service_slug: matched?.slug ?? "other",
         service_name: matched?.name ?? payload.service,
-        client_name: payload.fullName.trim(),
+        client_name: sanitizeText(payload.fullName),
         phone: payload.phone.trim(),
         email: payload.email.trim() || null,
         preferred_contact: "phone",
-        summary: payload.message.trim(),
+        summary: sanitizeText(payload.message),
         source: "contact_form",
-        answers: [{ key: "message", label: "Message", answer: payload.message.trim() }],
+        answers: [{ key: "message", label: "Message", answer: sanitizeText(payload.message) }],
       },
     });
     if (error) throw new Error(error.message);
