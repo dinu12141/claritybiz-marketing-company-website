@@ -1,0 +1,293 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   TV Clarity Capital — Design tokens (inspired by the brand emblem)
+------------------------------------------------------------------- */
+:root {
+  --navy: #062b52;
+  --navy-deep: #041d38;
+  --deep-blue: #075a91;
+  --royal-blue: #087fc1;
+  --cyan: #36b5e5;
+  --teal: #0f8fb5;
+  --gold: #f5c400;
+  --gold-dark: #d99f00;
+  --white: #ffffff;
+  --light-bg: #f4f8fc;
+  --dark-text: #10243a;
+  --muted-text: #56677b;
+  --line: #dce6f0;
+
+  --header-h: 4.25rem;
+  --header-h-compact: 3.75rem;
+}
+
+@theme inline {
+  --color-navy: var(--navy);
+  --color-navy-deep: var(--navy-deep);
+  --color-deep-blue: var(--deep-blue);
+  --color-royal: var(--royal-blue);
+  --color-cyan: var(--cyan);
+  --color-teal: var(--teal);
+  --color-gold: var(--gold);
+  --color-gold-dark: var(--gold-dark);
+  --color-light: var(--light-bg);
+  --color-ink: var(--dark-text);
+  --color-muted: var(--muted-text);
+  --color-line: var(--line);
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --shadow-card: 0 1px 2px rgb(6 43 82 / 0.04), 0 10px 30px -12px rgb(6 43 82 / 0.14);
+  --shadow-card-hover: 0 2px 4px rgb(6 43 82 / 0.05), 0 24px 48px -16px rgb(6 43 82 / 0.24);
+  --shadow-gold: 0 10px 28px -10px rgb(217 159 0 / 0.55);
+  --shadow-glow: 0 0 0 1px rgb(255 255 255 / 0.08), 0 30px 80px -20px rgb(0 0 0 / 0.55);
+}
+
+/* ------------------------------------------------------------------
+   Base
+------------------------------------------------------------------- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-white font-sans text-ink antialiased;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display text-ink;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--royal-blue);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  .on-dark :focus-visible {
+    outline-color: var(--gold);
+  }
+
+  ::selection {
+    background: rgb(245 196 0 / 0.35);
+    color: var(--dark-text);
+  }
+
+  img {
+    @apply max-w-full;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Components / utilities
+------------------------------------------------------------------- */
+@utility container-x {
+  @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+}
+
+@utility section-y {
+  @apply py-16 sm:py-20 lg:py-28;
+}
+
+@utility eyebrow {
+  @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em];
+}
+
+@utility card {
+  @apply rounded-2xl border border-line bg-white shadow-card transition-all duration-300;
+}
+
+@utility card-hover {
+  @apply hover:-translate-y-1 hover:shadow-card-hover hover:border-royal/30;
+}
+
+@utility glass {
+  background: rgb(255 255 255 / 0.06);
+  border: 1px solid rgb(255 255 255 / 0.12);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+@utility gradient-navy {
+  background: linear-gradient(135deg, var(--navy-deep) 0%, var(--navy) 45%, var(--deep-blue) 100%);
+}
+
+@utility gradient-hero {
+  background:
+    radial-gradient(60% 55% at 78% 30%, rgb(54 181 229 / 0.28) 0%, transparent 60%),
+    radial-gradient(45% 40% at 15% 85%, rgb(8 127 193 / 0.35) 0%, transparent 60%),
+    linear-gradient(120deg, var(--navy-deep) 0%, var(--navy) 50%, var(--deep-blue) 100%);
+}
+
+@utility text-gradient-gold {
+  background: linear-gradient(90deg, #ffe37a 0%, var(--gold) 45%, var(--gold-dark) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility bg-grid-light {
+  background-image:
+    linear-gradient(rgb(6 43 82 / 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(6 43 82 / 0.045) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+@utility bg-grid-dark {
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.05) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+@utility bg-dots-light {
+  background-image: radial-gradient(rgb(6 43 82 / 0.09) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+@utility mask-fade-b {
+  -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+}
+
+@utility mask-fade-radial {
+  -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 75%);
+  mask-image: radial-gradient(ellipse at center, black 40%, transparent 75%);
+}
+
+/* ------------------------------------------------------------------
+   Motion
+------------------------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.page-enter {
+  animation: page-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+
+@keyframes drift {
+  0% { transform: translate3d(0, 0, 0); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translate3d(var(--dx, 40px), var(--dy, -120px), 0); opacity: 0; }
+}
+
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spin-slow-reverse {
+  to { transform: rotate(-360deg); }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.96); opacity: 0.55; }
+  70% { transform: scale(1.06); opacity: 0; }
+  100% { transform: scale(1.06); opacity: 0; }
+}
+
+@keyframes dash {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-float { animation: float-y 7s ease-in-out infinite; }
+.animate-spin-slow { animation: spin-slow 40s linear infinite; }
+.animate-spin-slower { animation: spin-slow-reverse 65s linear infinite; }
+.animate-pulse-ring { animation: pulse-ring 4s ease-out infinite; }
+.animate-dash { stroke-dasharray: 1400; stroke-dashoffset: 1400; animation: dash 3.2s ease-out 0.4s forwards; }
+
+.particle {
+  position: absolute;
+  border-radius: 9999px;
+  animation: drift var(--dur, 14s) linear infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .page-enter,
+  .animate-float,
+  .animate-spin-slow,
+  .animate-spin-slower,
+  .animate-pulse-ring,
+  .particle {
+    animation: none !important;
+  }
+
+  .animate-dash {
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Header state transitions */
+.site-header {
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease,
+    height 0.3s ease,
+    border-color 0.3s ease;
+}
+
+/* Native details/summary polish for FAQ fallback */
+summary::-webkit-details-marker {
+  display: none;
+}

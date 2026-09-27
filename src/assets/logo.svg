@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 500 500" width="500" height="500" role="img" aria-labelledby="tvcc-title tvcc-desc">
+  <title id="tvcc-title">TV Clarity Capital (Pvt) Ltd</title>
+  <desc id="tvcc-desc">Circular blue and gold emblem of TV Clarity Capital with a rising bar chart, upward arrow and laurel wreath. Tagline: Our Capital is Your Success.</desc>
+  <defs>
+    <linearGradient id="og" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2E9FE0"/>
+      <stop offset=".5" stop-color="#0A5C98"/>
+      <stop offset="1" stop-color="#062B52"/>
+    </linearGradient>
+    <linearGradient id="ig" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5BC8F0"/>
+      <stop offset=".42" stop-color="#1A92D0"/>
+      <stop offset=".8" stop-color="#0A4F86"/>
+      <stop offset="1" stop-color="#062B52"/>
+    </linearGradient>
+    <linearGradient id="gr" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFF3B0"/>
+      <stop offset=".35" stop-color="#F5C400"/>
+      <stop offset=".65" stop-color="#D99F00"/>
+      <stop offset="1" stop-color="#FFE47A"/>
+    </linearGradient>
+    <linearGradient id="gb" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFE066"/>
+      <stop offset=".6" stop-color="#F5C400"/>
+      <stop offset="1" stop-color="#D99F00"/>
+    </linearGradient>
+    <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFE97A"/>
+      <stop offset="1" stop-color="#EDB400"/>
+    </linearGradient>
+    <radialGradient id="gl" cx=".35" cy=".22" r=".65">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity=".32"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+    <path id="topArc" d="M41.2 286.9A212 212 0 1 1 458.8 286.9"/>
+    <path id="botArc" d="M21.5 209.7A232 232 0 1 0 478.5 209.7"/>
+    <path id="swoosh" d="M150 300Q240 326 302 268"/>
+    <path id="leaf" d="M0 0C-7-7-19-7-27 0C-19 7-7 7 0 0Z"/>
+    <g id="lp">
+      <use href="#leaf" transform="translate(250 395) rotate(-38)"/>
+      <use href="#leaf" transform="translate(246 395) rotate(36)"/>
+    </g>
+    <g id="branch" fill="url(#lg)" stroke="#B8860B" stroke-width=".6">
+      <path d="M113.7 200.4A145 145 0 0 0 237.4 394.4" fill="none" stroke="#E0A800" stroke-width="3" stroke-linecap="round"/>
+      <use href="#lp" transform="rotate(8 250 250)"/>
+      <use href="#lp" transform="rotate(18 250 250)"/>
+      <use href="#lp" transform="rotate(28 250 250)"/>
+      <use href="#lp" transform="rotate(38 250 250)"/>
+      <use href="#lp" transform="rotate(48 250 250)"/>
+      <use href="#lp" transform="rotate(58 250 250)"/>
+      <use href="#lp" transform="rotate(68 250 250)"/>
+      <use href="#lp" transform="rotate(78 250 250)"/>
+      <use href="#lp" transform="rotate(88 250 250)"/>
+      <use href="#lp" transform="rotate(98 250 250)"/>
+      <use href="#lp" transform="rotate(108 250 250)"/>
+    </g>
+  </defs>
+
+  <!-- outer disc -->
+  <circle cx="250" cy="250" r="248" fill="url(#og)"/>
+  <circle cx="250" cy="250" r="247.4" fill="none" stroke="#0B3E6B" stroke-width="1.2"/>
+
+  <!-- inner disc -->
+  <circle cx="250" cy="250" r="187" fill="url(#ig)"/>
+  <circle cx="250" cy="250" r="187" fill="url(#gl)"/>
+
+  <!-- gold ring -->
+  <circle cx="250" cy="250" r="196" fill="none" stroke="url(#gr)" stroke-width="15"/>
+  <circle cx="250" cy="250" r="204" fill="none" stroke="#8F6200" stroke-width="1.4" opacity=".85"/>
+  <circle cx="250" cy="250" r="188" fill="none" stroke="#8F6200" stroke-width="1.4" opacity=".85"/>
+
+  <!-- curved company name -->
+  <text font-family="Georgia,'Times New Roman',Times,serif" font-weight="700" font-size="36" fill="#061A33" letter-spacing="1" textLength="560" lengthAdjust="spacing">
+    <textPath href="#topArc" startOffset="50%" text-anchor="middle">TV CLARITY CAPITAL PVT LTD</textPath>
+  </text>
+
+  <!-- curved service list -->
+  <text font-family="Arial,Helvetica,sans-serif" font-weight="500" font-size="14" fill="#FFFFFF" textLength="760" lengthAdjust="spacing">
+    <textPath href="#botArc" startOffset="50%" text-anchor="middle">Accounting, Auditing, Financing, IT, Business Consulting, Academic, Incorporation, Professional Services</textPath>
+  </text>
+
+  <!-- tagline -->
+  <text x="250" y="112" text-anchor="middle" font-family="Georgia,'Times New Roman',Times,serif" font-weight="700" font-size="18" fill="#0B1A2E">Our Capital is Your</text>
+  <text x="250" y="136" text-anchor="middle" font-family="Georgia,'Times New Roman',Times,serif" font-weight="700" font-size="18" fill="#0B1A2E">Success</text>
+
+  <!-- laurel wreath -->
+  <use href="#branch"/>
+  <use href="#branch" transform="matrix(-1 0 0 1 500 0)"/>
+
+  <!-- rising bars -->
+  <g fill="url(#gb)">
+    <rect x="240" y="228" width="20" height="50"/>
+    <rect x="266" y="203" width="20" height="75"/>
+    <rect x="292" y="176" width="20" height="102"/>
+  </g>
+
+  <!-- TV -->
+  <text x="146" y="243" font-family="'Arial Black','Arial Bold',Impact,'Helvetica Neue',Arial,sans-serif" font-weight="900" font-size="66" fill="#0A0F14">TV</text>
+
+  <!-- 2025 swoosh -->
+  <use href="#swoosh" fill="none" stroke="#F4F8FC" stroke-width="11" stroke-linecap="round"/>
+  <polygon points="315.1,255.8 308.1,274.6 295.9,261.4" fill="#F4F8FC"/>
+  <text font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="17" fill="#0B1A2E" dy="6">
+    <textPath href="#swoosh" startOffset="48%" text-anchor="middle">2025</textPath>
+  </text>
+
+  <!-- growth arrow -->
+  <path d="M152 288Q268 292 328 172" fill="none" stroke="url(#gb)" stroke-width="9" stroke-linecap="round"/>
+  <polygon points="340.5,147 340.5,178.3 315.5,165.7" fill="#F5C400"/>
+
+  <!-- star -->
+  <polygon points="250,364 252.7,371.3 260.5,371.6 254.4,376.4 256.5,383.9 250,379.6 243.5,383.9 245.6,376.4 239.5,371.6 247.3,371.3" fill="#F26B21" stroke="#C94F12" stroke-width=".8"/>
+</svg>
