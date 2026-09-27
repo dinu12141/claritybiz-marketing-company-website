@@ -36,25 +36,57 @@ const upsertCanonical = (href: string) => {
 
 export const buildLocalBusinessSchema = () => ({
   "@context": "https://schema.org",
-  "@type": "ProfessionalService",
+  "@type": ["AccountingService", "FinancialService", "ProfessionalService"],
   name: site.name,
   alternateName: site.shortName,
   slogan: site.tagline,
   description: site.description,
+  image: "https://claritybiz-marketing-company-website.vercel.app/og-image.jpg",
   telephone: site.phoneE164,
+  priceRange: "$$",
+  currenciesAccepted: "LKR, USD",
+  paymentAccepted: "Cash, Bank Transfer, Online",
   ...(site.email ? { email: site.email } : {}),
-  url: typeof window !== "undefined" ? window.location.origin : undefined,
+  url: typeof window !== "undefined" ? window.location.origin : "https://claritybiz-marketing-company-website.vercel.app",
   sameAs: [site.facebookUrl, ...site.socials.map((social) => social.url)].filter(Boolean),
   address: {
     "@type": "PostalAddress",
+    streetAddress: site.address,
     addressLocality: site.locality,
+    addressRegion: "Uva Province",
+    postalCode: "91200",
     addressCountry: "LK",
   },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 6.8728,
+    longitude: 81.3507,
+  },
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      opens: "08:30",
+      closes: "17:30",
+    },
+  ],
   areaServed: [
     { "@type": "City", name: "Monaragala" },
+    { "@type": "AdministrativeArea", name: "Uva Province" },
     { "@type": "Country", name: "Sri Lanka" },
   ],
-  knowsAbout: ["Accounting", "Auditing", "Business Registration", "Business Consulting", "IT Solutions"],
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Business, Finance & IT Services",
+    itemListElement: [
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Accounting Services", description: "Accurate financial records, bookkeeping and financial clarity." } },
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Auditing & Financial Services", description: "Structured financial auditing, compliance and control." } },
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Business Registration", description: "Private Limited company incorporation and secretarial support in Sri Lanka." } },
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Business Consulting", description: "Strategic and operational business consulting for sustainable growth." } },
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "IT Solutions", description: "Digital transformation, web applications and software solutions for business." } },
+    ],
+  },
+  knowsAbout: ["Accounting", "Auditing", "Business Registration", "Business Consulting", "IT Solutions", "Tax Advisory", "Bookkeeping"],
 });
 
 /**
