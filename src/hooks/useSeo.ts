@@ -42,6 +42,7 @@ export const buildLocalBusinessSchema = () => ({
   slogan: site.tagline,
   description: site.description,
   image: "https://claritybizz.com/og-image.jpg",
+  logo: "https://claritybizz.com/logo.png",
   telephone: site.phoneE164,
   priceRange: "$$",
   currenciesAccepted: "LKR, USD",
