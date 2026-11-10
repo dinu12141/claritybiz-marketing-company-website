@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { WhatsAppIcon } from "@/components/ui/BrandIcons";
 import { CtaSection } from "@/components/sections/CtaSection";
 import { PageHero } from "@/components/sections/PageHero";
 import { ProcessTimeline } from "@/components/sections/ProcessTimeline";
@@ -45,6 +46,15 @@ export function ServicesPage() {
         actions={
           <>
             <Button to="/consultation">Get a Consultation</Button>
+            <Button
+              href={site.whatsappHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="navy"
+              className="bg-[#1f9d55] text-white hover:bg-[#178a49]"
+            >
+              <WhatsAppIcon className="h-4 w-4" /> WhatsApp {site.whatsappDisplay}
+            </Button>
             <Button href={site.phoneHref} variant="ghost-light">
               Call {site.phoneDisplay}
             </Button>

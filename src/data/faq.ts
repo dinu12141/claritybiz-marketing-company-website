@@ -29,16 +29,16 @@ export const faqs: FaqItem[] = [
   {
     question: "How can I request a consultation?",
     answer:
-      "You can call us on 071 405 3449, message us on WhatsApp, or send an inquiry through the form on our Contact page. Briefly describe your requirement and we will get back to you to arrange a consultation.",
+      "You can message us on WhatsApp on 076 430 3421 (recommended for the fastest response), call us on 071 405 3449, email tvclaritycapital@gmail.com, or submit an inquiry through our Contact page. Briefly describe your requirement and our team will get back to you promptly.",
   },
   {
     question: "Where is TV Clarity Capital located?",
     answer:
-      "TV Clarity Capital (Pvt) Ltd is based in Monaragala, Sri Lanka. Please contact us to arrange a meeting or to discuss your requirement by phone or WhatsApp.",
+      "TV Clarity Capital (Pvt) Ltd is based in Monaragala, Sri Lanka. We serve clients locally and island-wide across Sri Lanka through direct meetings, phone, email, and WhatsApp.",
   },
   {
     question: "How can I contact you?",
     answer:
-      "Call or WhatsApp 071 405 3449, use the inquiry form on our Contact page, or connect with us on Facebook. We are happy to discuss accounting, auditing, business registration, consulting or IT requirements.",
+      "The fastest way to reach us is via WhatsApp at 076 430 3421. For direct voice calls, call us on 071 405 3449. You can also email tvclaritycapital@gmail.com or send an inquiry via our website. We are always happy to assist with accounting, auditing, business registration, consulting, and IT requirements.",
   },
 ];

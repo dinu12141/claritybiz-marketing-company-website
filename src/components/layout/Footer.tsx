@@ -1,4 +1,4 @@
-import { ArrowUpRight, Globe, MapPin, Phone } from "lucide-react";
+import { ArrowUpRight, Globe, Mail, MapPin, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Container } from "@/components/ui/Container";
 import { LogoLockup } from "@/components/ui/Logo";
@@ -127,13 +127,45 @@ export function Footer() {
                 </div>
               </li>
               <li className="flex items-start gap-2.5 md:gap-3">
+                <span className="mt-0.5 flex h-7 w-7 md:h-8 md:w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-500/20 text-[#25D366]">
+                  <WhatsAppIcon className="h-3.5 w-3.5 md:h-4 md:w-4" />
+                </span>
+                <div>
+                  <div className="flex items-center gap-1.5">
+                    <p className="text-xs text-white/50 md:text-sm">WhatsApp</p>
+                    <span className="rounded bg-emerald-500/20 px-1.5 py-0.2 text-[9px] font-bold text-emerald-400">
+                      Fastest
+                    </span>
+                  </div>
+                  <a
+                    href={site.whatsappHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm font-medium text-[#25D366] hover:underline md:text-[15px]"
+                  >
+                    {site.whatsappDisplay}
+                  </a>
+                </div>
+              </li>
+              <li className="flex items-start gap-2.5 md:gap-3">
                 <span className="mt-0.5 flex h-7 w-7 md:h-8 md:w-8 shrink-0 items-center justify-center rounded-lg bg-white/8 text-gold">
                   <Phone className="h-3.5 w-3.5 md:h-4 md:w-4" />
                 </span>
                 <div>
-                  <p className="text-xs text-white/50 md:text-sm">Phone / WhatsApp</p>
+                  <p className="text-xs text-white/50 md:text-sm">Voice / Direct Call</p>
                   <a href={site.phoneHref} className="text-sm font-medium text-white hover:text-gold md:text-[15px]">
                     {site.phoneDisplay}
+                  </a>
+                </div>
+              </li>
+              <li className="flex items-start gap-2.5 md:gap-3">
+                <span className="mt-0.5 flex h-7 w-7 md:h-8 md:w-8 shrink-0 items-center justify-center rounded-lg bg-white/8 text-cyan">
+                  <Mail className="h-3.5 w-3.5 md:h-4 md:w-4" />
+                </span>
+                <div>
+                  <p className="text-xs text-white/50 md:text-sm">Email</p>
+                  <a href={`mailto:${site.email}`} className="break-all text-xs sm:text-sm font-medium text-white hover:text-gold">
+                    {site.email}
                   </a>
                 </div>
               </li>

@@ -68,11 +68,16 @@ export function FaqPage() {
                     specific requirement.
                   </p>
                   <div className="mt-6 space-y-3">
-                    <Button href={site.phoneHref} className="w-full">
-                      <Phone className="h-4 w-4" /> Call {site.phoneDisplay}
+                    <Button
+                      href={site.whatsappHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full bg-[#1f9d55] text-white hover:bg-[#178a49]"
+                    >
+                      <WhatsAppIcon className="h-4.5 w-4.5" /> WhatsApp {site.whatsappDisplay} (Fastest)
                     </Button>
-                    <Button href={site.whatsappHref} variant="ghost-light" className="w-full">
-                      <WhatsAppIcon className="h-4.5 w-4.5" /> WhatsApp
+                    <Button href={site.phoneHref} variant="ghost-light" className="w-full">
+                      <Phone className="h-4 w-4" /> Call {site.phoneDisplay}
                     </Button>
                     <Button to="/contact" variant="white" className="w-full">
                       Send an Inquiry <ArrowRight className="h-4 w-4" />

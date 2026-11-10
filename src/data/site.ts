@@ -15,7 +15,9 @@ export type SiteSettings = {
   phoneE164: string;
   phoneHref: string;
   whatsappNumber: string;
+  whatsappDisplay: string;
   whatsappHref: string;
+  whatsappNote: string;
   facebookUrl: string;
   email: string;
   address: string;
@@ -42,12 +44,14 @@ export const site: SiteSettings = {
   phoneDisplay: "071 405 3449",
   phoneE164: "+94714053449",
   phoneHref: "tel:+94714053449",
-  whatsappNumber: "94714053449",
-  whatsappHref: "https://wa.me/94714053449",
+  whatsappNumber: "94764303421",
+  whatsappDisplay: "076 430 3421",
+  whatsappHref: "https://wa.me/94764303421",
+  whatsappNote: "Fastest response · Recommended for instant inquiries",
   facebookUrl: "https://www.facebook.com/share/1Gr2TQKFwW/",
-  email: "",
+  email: "tvclaritycapital@gmail.com",
   address: "Monaragala, Sri Lanka",
-  businessHours: "",
+  businessHours: "Monday – Saturday: 8:30 AM – 5:30 PM",
   socials: [],
   copyrightYear: 2026,
 };

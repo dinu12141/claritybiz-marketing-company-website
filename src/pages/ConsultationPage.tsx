@@ -299,12 +299,22 @@ export function ConsultationPage() {
                   </ol>
                 </div>
                 <div className="gradient-navy on-dark mt-4 hidden rounded-2xl p-5 text-white lg:block">
-                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-cyan">Prefer to talk?</p>
-                  <a href={site.phoneHref} className="mt-2 flex items-center gap-2 text-sm font-semibold hover:text-gold">
-                    <Phone className="h-4 w-4" /> {site.phoneDisplay}
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-cyan">Need quick help?</p>
+                  <a
+                    href={site.whatsappHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-2 flex items-center justify-between rounded-lg bg-[#25D366]/20 px-3 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#25D366]/30"
+                  >
+                    <span className="flex items-center gap-2">
+                      <WhatsAppIcon className="h-4 w-4 text-[#25D366]" /> WhatsApp {site.whatsappDisplay}
+                    </span>
+                    <span className="rounded bg-emerald-500/30 px-1.5 py-0.5 text-[9px] font-bold text-emerald-300">
+                      Fastest
+                    </span>
                   </a>
-                  <a href={site.whatsappHref} target="_blank" rel="noopener noreferrer" className="mt-1.5 flex items-center gap-2 text-sm font-semibold hover:text-gold">
-                    <WhatsAppIcon className="h-4 w-4" /> WhatsApp
+                  <a href={site.phoneHref} className="mt-2 flex items-center gap-2 text-xs font-semibold text-white/80 hover:text-gold px-1">
+                    <Phone className="h-3.5 w-3.5 text-gold" /> Voice: {site.phoneDisplay}
                   </a>
                 </div>
               </aside>

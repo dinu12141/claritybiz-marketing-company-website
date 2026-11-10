@@ -81,6 +81,15 @@ function ServiceDetail({ service }: { service: NonNullable<ReturnType<typeof get
             <Button to={contactPath}>
               {service.cta.button} <ArrowRight className="h-4 w-4" />
             </Button>
+            <Button
+              href={whatsappLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="navy"
+              className="bg-[#1f9d55] text-white hover:bg-[#178a49]"
+            >
+              <WhatsAppIcon className="h-4 w-4" /> WhatsApp {site.whatsappDisplay}
+            </Button>
             <Button href={site.phoneHref} variant="ghost-light">
               <Phone className="h-4 w-4" /> {site.phoneDisplay}
             </Button>

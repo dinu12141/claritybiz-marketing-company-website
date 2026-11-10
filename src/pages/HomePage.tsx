@@ -1,4 +1,4 @@
-import { ArrowRight, Check, MapPin, Phone } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
@@ -96,9 +96,9 @@ export function HomePage() {
           <Particles count={18} />
           <div className="absolute -left-40 top-1/3 h-96 w-96 rounded-full bg-royal/25 blur-3xl" aria-hidden="true" />
 
-          <Container className="relative pb-16 pt-6 sm:pb-20 sm:pt-8 lg:pb-20 lg:pt-9">
+          <Container className="relative pb-16 pt-5 sm:pb-20 sm:pt-6 lg:pb-20 lg:pt-7">
             <div className="grid items-center gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8">
-              <div className="max-w-2xl">
+              <div className="max-w-2xl lg:-mt-4">
                 <Reveal>
                   <span className="eyebrow text-xs text-cyan sm:text-sm">
                     <span className="h-px w-6 bg-gold sm:w-8" aria-hidden="true" />
@@ -108,7 +108,7 @@ export function HomePage() {
                 <Reveal delay={80}>
                   <h1
                     id="hero-heading"
-                    className="mt-3 text-3xl font-extrabold leading-[1.08] tracking-tight text-white sm:text-4xl lg:text-5xl xl:text-[3.5rem]"
+                    className="mt-6 text-3xl font-extrabold leading-[1.08] tracking-tight text-white sm:mt-8 sm:text-4xl lg:mt-10 lg:text-5xl xl:text-[3.5rem]"
                   >
                     {text(hero, "heading_line_1", "Clarity in Finance.")}
                     <br />
@@ -131,20 +131,6 @@ export function HomePage() {
                   <Button to={text(hero, "secondary_cta_link", "/services")} variant="ghost-light" size="md">
                     {text(hero, "secondary_cta_label", "Explore Our Services")}
                   </Button>
-                </Reveal>
-                <Reveal delay={320} className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-white/75 sm:text-sm">
-                  <a href={site.phoneHref} className="inline-flex items-center gap-2 font-medium transition-colors hover:text-gold">
-                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-gold">
-                      <Phone className="h-3 w-3" />
-                    </span>
-                    Call {site.phoneDisplay}
-                  </a>
-                  <span className="inline-flex items-center gap-2 font-medium">
-                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-gold">
-                      <MapPin className="h-3 w-3" />
-                    </span>
-                    {site.location}
-                  </span>
                 </Reveal>
               </div>
 

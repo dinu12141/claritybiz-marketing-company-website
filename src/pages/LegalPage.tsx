@@ -46,7 +46,7 @@ const content: Record<LegalKind, { title: string; intro: string; path: string; s
       {
         heading: "Contact",
         paragraphs: [
-          `If you have any questions about this policy or the information we hold about you, please contact TV Clarity Capital (Pvt) Ltd, Monaragala, Sri Lanka, on ${site.phoneDisplay}.`,
+          `If you have any questions about this policy or the information we hold about you, please contact TV Clarity Capital (Pvt) Ltd, Monaragala, Sri Lanka, on WhatsApp (${site.whatsappDisplay}), phone (${site.phoneDisplay}), or email (${site.email}).`,
         ],
       },
     ],

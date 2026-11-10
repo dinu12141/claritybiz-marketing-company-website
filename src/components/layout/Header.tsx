@@ -224,12 +224,22 @@ export function Header() {
                               <Button to="/consultation" size="sm" className="w-full h-8 text-xs font-semibold" onClick={() => setMegaOpen(false)}>
                                 Get Consultation
                               </Button>
-                              <a
-                                href={site.phoneHref}
-                                className="flex items-center justify-center gap-1.5 text-xs font-semibold text-white/85 hover:text-gold"
-                              >
-                                <Phone className="h-3.5 w-3.5" /> {site.phoneDisplay}
-                              </a>
+                              <div className="flex flex-col items-center gap-1.5 pt-1">
+                                <a
+                                  href={site.whatsappHref}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1 text-xs font-semibold text-[#25D366] hover:underline"
+                                >
+                                  <WhatsAppIcon className="h-3.5 w-3.5" /> WhatsApp: {site.whatsappDisplay} (Fastest)
+                                </a>
+                                <a
+                                  href={site.phoneHref}
+                                  className="flex items-center justify-center gap-1 text-xs font-semibold text-white/80 hover:text-gold"
+                                >
+                                  <Phone className="h-3 w-3" /> Call: {site.phoneDisplay}
+                                </a>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -420,16 +430,18 @@ export function Header() {
 
               {/* Action Buttons */}
               <div className="shrink-0 space-y-2.5 border-t border-line bg-slate-50/90 p-4">
-                <Button href={site.phoneHref} className="w-full" size="md">
-                  <Phone className="h-4 w-4" /> Call Now · {site.phoneDisplay}
-                </Button>
                 <Button
                   href={site.whatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   variant="navy"
                   className="w-full bg-[#1f9d55] text-white hover:bg-[#178a49]"
                   size="md"
                 >
-                  <WhatsAppIcon className="h-4.5 w-4.5" /> Chat on WhatsApp
+                  <WhatsAppIcon className="h-4.5 w-4.5" /> WhatsApp: {site.whatsappDisplay} (Fastest)
+                </Button>
+                <Button href={site.phoneHref} className="w-full" size="md" variant="outline">
+                  <Phone className="h-4 w-4" /> Call: {site.phoneDisplay}
                 </Button>
                 <div className="flex items-center justify-between pt-1 text-sm">
                   <Link

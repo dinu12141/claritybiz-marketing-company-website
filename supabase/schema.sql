@@ -990,9 +990,9 @@ select * from (values
   ('Can you help with business registration?', 'Yes. We provide guidance and assistance throughout the business registration and setup process, including explaining the steps involved, helping you organize and prepare documentation, and consulting on how to set up your business properly from the start. Registration decisions and approvals remain with the relevant authorities.', 3),
   ('Do you provide business consulting?', 'Yes. Our business consulting covers business planning, process improvement, operational guidance, financial planning support, growth strategy and decision support. We follow a practical consultation journey: discuss, analyze, recommend, implement and review.', 4),
   ('Do you provide IT solutions?', 'Yes. We support businesses with practical IT and digital solutions such as business websites, web applications, business software, ERP/POS and CRM solutions, process automation, IT consultation and digital transformation guidance.', 5),
-  ('How can I request a consultation?', 'Use the consultation form on our website, call us on 071 405 3449, or message us on WhatsApp. Briefly describe your requirement and we will get back to you to arrange a consultation.', 6),
-  ('Where is TV Clarity Capital located?', 'TV Clarity Capital (Pvt) Ltd is based in Monaragala, Sri Lanka. Please contact us to arrange a meeting or to discuss your requirement by phone or WhatsApp.', 7),
-  ('How can I contact you?', 'Call or WhatsApp 071 405 3449, use the consultation or inquiry forms on our website, or connect with us on Facebook. We are happy to discuss accounting, auditing, business registration, consulting or IT requirements.', 8)
+  ('How can I request a consultation?', 'Message us on WhatsApp on 076 430 3421 (Fastest response), call us on 071 405 3449, email tvclaritycapital@gmail.com, or use the consultation form on our website.', 6),
+  ('Where is TV Clarity Capital located?', 'TV Clarity Capital (Pvt) Ltd is based in Monaragala, Sri Lanka. We serve clients across Sri Lanka by phone, WhatsApp, email, and direct consultation.', 7),
+  ('How can I contact you?', 'WhatsApp us on 076 430 3421 for instant support, call 071 405 3449, email tvclaritycapital@gmail.com, or submit an inquiry through our Contact page.', 8)
 ) as seed(question, answer, sort_order)
 where not exists (select 1 from public.faqs);
 
@@ -1003,12 +1003,12 @@ insert into public.site_settings (key, value) values
   ('tagline', 'Our Capital is Your Success'),
   ('phone_display', '071 405 3449'),
   ('phone_e164', '+94714053449'),
-  ('whatsapp_number', '94714053449'),
+  ('whatsapp_number', '94764303421'),
   ('location', 'Monaragala, Sri Lanka'),
   ('address', 'Monaragala, Sri Lanka'),
   ('facebook_url', 'https://www.facebook.com/share/1Gr2TQKFwW/'),
-  ('email', ''),
-  ('business_hours', '')
+  ('email', 'tvclaritycapital@gmail.com'),
+  ('business_hours', 'Monday – Saturday: 8:30 AM – 5:30 PM')
 on conflict (key) do nothing;
 
 -- Global SEO row

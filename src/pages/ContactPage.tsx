@@ -11,6 +11,7 @@ import { serviceOptions } from "@/lib/inquiry";
 import { images } from "@/data/images";
 import { site } from "@/data/site";
 import { buildLocalBusinessSchema, useSeo } from "@/hooks/useSeo";
+import { cn } from "@/utils/cn";
 
 const mapsSearchUrl = "https://www.google.com/maps/search/?api=1&query=Monaragala%2C+Sri+Lanka";
 const mapsEmbedUrl = "https://www.google.com/maps?q=Monaragala,+Sri+Lanka&z=12&output=embed";
@@ -21,9 +22,9 @@ export function ContactPage() {
   const defaultService = serviceOptions.includes(requested) ? requested : "";
 
   useSeo({
-    title: "Contact TV Clarity Capital (Pvt) Ltd | Monaragala, Sri Lanka | 071 405 3449",
+    title: `Contact TV Clarity Capital (Pvt) Ltd | Monaragala | ${site.whatsappDisplay}`,
     description:
-      "Contact TV Clarity Capital in Monaragala, Sri Lanka for accounting, auditing, business registration, consulting and IT solutions. Call 071 405 3449, message on WhatsApp or send an inquiry.",
+      `Contact TV Clarity Capital in Monaragala, Sri Lanka. WhatsApp: ${site.whatsappDisplay} (Fastest response), Voice: ${site.phoneDisplay}, Email: ${site.email}. Accounting, auditing, business registration, consulting and IT solutions.`,
     path: "/contact",
     jsonLd: [
       {
@@ -37,12 +38,31 @@ export function ContactPage() {
 
   const cards = [
     {
-      title: "Call Us",
+      title: "WhatsApp",
+      value: site.whatsappDisplay,
+      badge: "Fastest • Recommended",
+      description: "Best for instant support and quick queries. Chat with us directly.",
+      href: site.whatsappHref,
+      icon: WhatsAppIcon,
+      cta: "Chat on WhatsApp",
+      external: true,
+      highlight: true,
+    },
+    {
+      title: "Voice Call",
       value: site.phoneDisplay,
-      description: "Speak to us directly about your requirement.",
+      description: "Speak directly to our consultants for in-depth advice.",
       href: site.phoneHref,
       icon: Phone,
       cta: "Call now",
+    },
+    {
+      title: "Email Us",
+      value: site.email,
+      description: "Send documents, proposals, or formal inquiries.",
+      href: `mailto:${site.email}`,
+      icon: Mail,
+      cta: "Send email",
     },
     {
       title: "Visit Us",
@@ -51,15 +71,6 @@ export function ContactPage() {
       href: mapsSearchUrl,
       icon: MapPin,
       cta: "View on map",
-      external: true,
-    },
-    {
-      title: "Connect With Us",
-      value: "Facebook",
-      description: "Follow our page for updates and announcements.",
-      href: site.facebookUrl,
-      icon: FacebookIcon,
-      cta: "Open Facebook",
       external: true,
     },
   ];
@@ -83,22 +94,36 @@ export function ContactPage() {
                 </div>
               </div>
               <div className="mt-6 space-y-3">
-                <a href={site.phoneHref} className="flex items-center justify-between rounded-xl bg-gold px-4 py-3 font-semibold text-navy transition-colors hover:bg-gold-dark">
-                  <span className="inline-flex items-center gap-2">
-                    <Phone className="h-4 w-4" /> {site.phoneDisplay}
-                  </span>
-                  <ArrowUpRight className="h-4 w-4" />
-                </a>
                 <a
                   href={site.whatsappHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-between rounded-xl border border-white/20 bg-white/5 px-4 py-3 font-semibold text-white transition-colors hover:bg-white/10"
+                  className="flex items-center justify-between rounded-xl bg-[#25D366] px-4 py-3 font-semibold text-white shadow-md transition-colors hover:bg-[#1fbd59]"
                 >
                   <span className="inline-flex items-center gap-2">
-                    <WhatsAppIcon className="h-4.5 w-4.5 text-[#25D366]" /> WhatsApp
+                    <WhatsAppIcon className="h-4.5 w-4.5" /> WhatsApp: {site.whatsappDisplay}
+                  </span>
+                  <span className="rounded bg-black/20 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide">
+                    Fastest
+                  </span>
+                </a>
+                <a
+                  href={site.phoneHref}
+                  className="flex items-center justify-between rounded-xl bg-gold px-4 py-3 font-semibold text-navy transition-colors hover:bg-gold-dark"
+                >
+                  <span className="inline-flex items-center gap-2">
+                    <Phone className="h-4 w-4" /> Voice: {site.phoneDisplay}
                   </span>
                   <ArrowUpRight className="h-4 w-4" />
+                </a>
+                <a
+                  href={`mailto:${site.email}`}
+                  className="flex items-center justify-between rounded-xl border border-white/20 bg-white/5 px-4 py-2.5 text-xs font-semibold text-white/90 transition-colors hover:bg-white/10"
+                >
+                  <span className="inline-flex items-center gap-2">
+                    <Mail className="h-3.5 w-3.5 text-cyan" /> {site.email}
+                  </span>
+                  <ArrowUpRight className="h-3.5 w-3.5" />
                 </a>
               </div>
             </div>
@@ -109,7 +134,7 @@ export function ContactPage() {
       {/* Contact cards */}
       <section className="relative z-10 -mt-10" aria-label="Contact options">
         <Container>
-          <div className="grid gap-5 md:grid-cols-3">
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {cards.map((card, index) => {
               const Icon = card.icon;
               return (
@@ -117,13 +142,28 @@ export function ContactPage() {
                   <a
                     href={card.href}
                     {...(card.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                    className="card card-hover group flex h-full flex-col p-6"
+                    className={cn(
+                      "card card-hover group relative flex h-full flex-col p-6",
+                      card.highlight && "ring-2 ring-[#25D366]/40 bg-emerald-50/20",
+                    )}
                   >
-                    <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-navy text-gold">
-                      <Icon className="h-5.5 w-5.5" />
-                    </span>
+                    <div className="flex items-start justify-between">
+                      <span
+                        className={cn(
+                          "flex h-12 w-12 items-center justify-center rounded-xl",
+                          card.highlight ? "bg-[#25D366] text-white" : "bg-navy text-gold",
+                        )}
+                      >
+                        <Icon className="h-5.5 w-5.5" />
+                      </span>
+                      {card.badge && (
+                        <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800">
+                          {card.badge}
+                        </span>
+                      )}
+                    </div>
                     <span className="mt-5 text-sm font-semibold uppercase tracking-[0.14em] text-muted">{card.title}</span>
-                    <span className="mt-1 font-display text-xl font-bold text-navy">{card.value}</span>
+                    <span className="mt-1 font-display text-lg font-bold text-navy break-all">{card.value}</span>
                     <span className="mt-2 text-sm leading-relaxed text-muted">{card.description}</span>
                     <span className="mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-semibold text-royal group-hover:text-navy">
                       {card.cta} <ArrowUpRight className="h-4 w-4" />
@@ -166,11 +206,32 @@ export function ContactPage() {
                     </div>
                   </li>
                   <li className="flex gap-4">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-[#25D366] ring-1 ring-emerald-200">
+                      <WhatsAppIcon className="h-5 w-5" />
+                    </span>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm font-semibold text-ink">WhatsApp</p>
+                        <span className="rounded-full bg-emerald-100 px-1.5 py-0.5 text-[9px] font-bold text-emerald-800">
+                          Fastest Response
+                        </span>
+                      </div>
+                      <a
+                        href={site.whatsappHref}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm font-semibold text-[#1f9d55] hover:underline"
+                      >
+                        {site.whatsappDisplay} (Chat Now)
+                      </a>
+                    </div>
+                  </li>
+                  <li className="flex gap-4">
                     <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-light text-royal ring-1 ring-line">
                       <Phone className="h-5 w-5" />
                     </span>
                     <div>
-                      <p className="text-sm font-semibold text-ink">Phone / WhatsApp</p>
+                      <p className="text-sm font-semibold text-ink">Voice / Direct Call</p>
                       <a href={site.phoneHref} className="text-sm text-royal hover:text-navy">
                         {site.phoneDisplay}
                       </a>

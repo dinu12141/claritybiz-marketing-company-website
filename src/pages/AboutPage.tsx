@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { LogoImage } from "@/components/ui/Logo";
+import { WhatsAppIcon } from "@/components/ui/BrandIcons";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Rings } from "@/components/decor/Backgrounds";
@@ -182,6 +183,15 @@ export function AboutPage() {
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button to="/contact">Contact Us</Button>
+              <Button
+                href={site.whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="navy"
+                className="bg-[#1f9d55] text-white hover:bg-[#178a49]"
+              >
+                <WhatsAppIcon className="h-4 w-4" /> WhatsApp {site.whatsappDisplay}
+              </Button>
               <Button href={site.phoneHref} variant="ghost-light">
                 Call {site.phoneDisplay}
               </Button>
